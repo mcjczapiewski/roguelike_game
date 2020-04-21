@@ -28,10 +28,7 @@ def put_player_on_board(board, player):
     '''
     row_num = player['row_position']
     col_num = player['column_position']
-    try:
-        board[row_num][col_num] = player['icon']
-    except IndexError:
-        pass
+    board[row_num][col_num] = player['icon']
 
 
 def read_board_from_file(file_name):
