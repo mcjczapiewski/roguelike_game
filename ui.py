@@ -7,3 +7,8 @@ def display_board(board):
     '''
     for row in board:
         print("".join(row))
+
+
+# add display dialog box
+# add display palyer stats
+# add display inventory

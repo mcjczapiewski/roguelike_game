@@ -42,22 +42,10 @@ def main():
             is_running = False
         else:
             # movement
-            try:
-                movement(key, player)
-                board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-            except IndexError:
-                pass
+            engine.movement(key, player, board)
+            board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+
         util.clear_screen()
-
-
-def movement(key, player):
-    key_choice = ['w', 's', 'a', 'd']
-    column_next = [0, 0, -1, 1]
-    row_next = [-1, 1, 0, 0]
-    for option in key_choice:
-        if key == option:
-            player['column_position'] += column_next[key_choice.index(option)]
-            player['row_position'] += row_next[key_choice.index(option)]
 
 
 if __name__ == '__main__':
