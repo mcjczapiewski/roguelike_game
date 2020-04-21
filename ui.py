@@ -5,4 +5,5 @@ def display_board(board):
     Returns:
     Nothing
     '''
-    pass
+    for row in board:
+        print("".join(row))

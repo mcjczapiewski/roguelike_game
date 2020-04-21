@@ -12,13 +12,19 @@ BOARD_HEIGHT = 20
 
 def create_player():
     '''
-    Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
+    Creates a 'player' dictionary for storing all player related informations
+     - i.e. player icon, player position.
     Fell free to extend this dictionary!
 
     Returns:
     dictionary
     '''
-    pass
+    player = {
+        "icon": PLAYER_ICON,
+        "column_position": PLAYER_START_X,
+        "row_position": PLAYER_START_Y,
+    }
+    return player
 
 
 def main():
@@ -35,8 +41,23 @@ def main():
         if key == 'q':
             is_running = False
         else:
-            pass
+            # movement
+            try:
+                movement(key, player)
+                board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+            except IndexError:
+                pass
         util.clear_screen()
+
+
+def movement(key, player):
+    key_choice = ['w', 's', 'a', 'd']
+    column_next = [0, 0, -1, 1]
+    row_next = [-1, 1, 0, 0]
+    for option in key_choice:
+        if key == option:
+            player['column_position'] += column_next[key_choice.index(option)]
+            player['row_position'] += row_next[key_choice.index(option)]
 
 
 if __name__ == '__main__':

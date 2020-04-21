@@ -9,7 +9,10 @@ def create_board(width, height):
     Returns:
     list: Game board
     '''
-    pass
+    # create list of lists where:
+    # width == sublist length, height == number of sublists
+    matrix = [["." for x in range(0, width)] for y in range(0, height)]  
+    return matrix
 
 
 def put_player_on_board(board, player):
@@ -23,4 +26,6 @@ def put_player_on_board(board, player):
     Returns:
     Nothing
     '''
-    pass
+    row_num = player['row_position']
+    col_num = player['column_position']
+    board[row_num][col_num] = player['icon']
