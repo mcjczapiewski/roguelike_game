@@ -23,6 +23,7 @@ def create_player():
         "icon": PLAYER_ICON,
         "column_position": PLAYER_START_X,
         "row_position": PLAYER_START_Y,
+        "temp_field": "",
     }
     return player
 
@@ -43,8 +44,7 @@ def main():
         else:
             # movement
             engine.movement(key, player, board)
-            board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-
+            # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
         util.clear_screen()
 
 
