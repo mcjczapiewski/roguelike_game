@@ -16,7 +16,7 @@ def create_board(width, height):
     # width == sublist length, height == number of sublists
     board = [["." for x in range(0, width - 2)] for y in range(0, height - 2)]
     # put some rooms on the board, max h/w is half of board h/w
-    for room_num in range(3, random.randint(4, 8)):
+    for room_num in range(1, random.randint(3, 8)):
         room_gen(board)
     # return board
     return board
@@ -47,7 +47,7 @@ def movement(key, player, board):
     key_choice = ['w', 's', 'a', 'd']
     column_next = [0, 0, -1, 1]
     row_next = [-1, 1, 0, 0]
-    walkable = ['.', '#', '+']   
+    walkable = ['.', '#', '+']
     for option in key_choice:
         if key == option:
             # next position
@@ -96,9 +96,40 @@ def room_gen(board):
                 board[room_row][room_col] = ','
     else:
         room_gen(board)
+    # step 4: scan if making door is possible
 
+
+def check_pos_around(board, col_num, row_num):
+    ''' creates a list of values around current position '''
+    surrounding = {
+        'n': '',  # value of field to the north
+        'e': '',  # value of field to the east
+        's': '',  # value of field to the south
+        'w': '',  # value of field to the west
+    }
+    # set north
+    if row_num == 0:
+        surrounding['n'] = ''
+    else:
+        surrounding['n'] = board[row_num - 1][col_num]
+    # set east
+    if col_num == len(board[0]) - 1:
+        surrounding['e'] = ''
+    else:
+        surrounding['e'] = board[row_num][col_num + 1]
+    # set south
+    if row_num == len(board) - 1:
+        surrounding['s'] = ''
+    else:
+        surrounding['s'] = board[row_num + 1][col_num]
+    # set west
+    if col_num == 0:
+        surrounding['w'] = ''
+    else:
+        surrounding['w'] = board[row_num][col_num - 1]
+    if '.' in surrounding.values():
+        pass
 
 
 # for row in create_board(50, 30):
 #     print("".join(row))
-
