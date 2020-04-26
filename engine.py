@@ -14,13 +14,12 @@ def create_board(width, height):
     '''
     # create list of lists where:
     # width == sublist length, height == number of sublists
-    matrix = [["." for x in range(0, width - 2)] for y in range(0, height - 2)]
-    # put some rooms on the board
-    room_gen(matrix, 5, 3)
-    room_gen(matrix, 6, 4)
-    room_gen(matrix, 4, 7)
+    board = [["." for x in range(0, width - 2)] for y in range(0, height - 2)]
+    # put some rooms on the board, max h/w is half of board h/w
+    for room_num in range(3, random.randint(4, 8)):
+        room_gen(board)
     # return board
-    return matrix
+    return board
 
 
 def put_player_on_board(board, player):
@@ -73,8 +72,11 @@ def check_pos_value(board_col, board_row, board):
     return pos_value
 
 
-def room_gen(board, r_height, r_width):
+def room_gen(board):
     ''' generates empty room on the board '''
+    # set room parameters
+    r_height = random.randint(4, len(board) / 2)
+    r_width = random.randint(4, len(board[0]) / 2)
     # step 1: select random place on the board to start
     row_pointer = random.randint(0, len(board) - r_height)
     col_pointer = random.randint(0, len(board[0]) - r_width)
@@ -85,7 +87,7 @@ def room_gen(board, r_height, r_width):
             if board[room_row][room_col] == 'X':
                 can_build = False
     # step 3: draw a room
-    if can_build == True:
+    if can_build:
         for room_row in range(row_pointer, row_pointer + r_height):
             for room_col in range(col_pointer, col_pointer + r_width):
                 board[room_row][room_col] = 'X'
@@ -93,14 +95,10 @@ def room_gen(board, r_height, r_width):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
                 board[room_row][room_col] = '.'
     else:
-        room_gen(board, r_height, r_width)
+        room_gen(board)
 
 
 
 # for row in create_board(50, 30):
 #     print("".join(row))
 
-
-
-def create_level(board):
-    pass

@@ -6,7 +6,7 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
 
-BOARD_WIDTH = 30
+BOARD_WIDTH = 60
 BOARD_HEIGHT = 20
 
 
@@ -44,7 +44,6 @@ def main():
         else:
             # movement
             engine.movement(key, player, board)
-            # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
         util.clear_screen()
 
 
