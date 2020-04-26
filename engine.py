@@ -84,7 +84,7 @@ def room_gen(board):
     can_build = True
     for room_row in range(row_pointer, row_pointer + r_height):
         for room_col in range(col_pointer, col_pointer + r_width):
-            if board[room_row][room_col] == 'X':
+            if board[room_row][room_col] == 'X' or board[room_row][room_col] == ',':
                 can_build = False
     # step 3: draw a room
     if can_build:
@@ -93,7 +93,7 @@ def room_gen(board):
                 board[room_row][room_col] = 'X'
         for room_row in range(row_pointer + 1, row_pointer + r_height - 1):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
-                board[room_row][room_col] = '.'
+                board[room_row][room_col] = ','
     else:
         room_gen(board)
 
