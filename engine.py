@@ -14,10 +14,15 @@ def create_board(width, height):
     '''
     # create list of lists where:
     # width == sublist length, height == number of sublists
-    board = [["." for x in range(0, width - 2)] for y in range(0, height - 2)]
+    board = [[' ' for x in range(0, width - 2)] for y in range(0, height - 2)]
     # put some rooms on the board, max h/w is half of board h/w
     for room_num in range(1, random.randint(3, 8)):
         room_gen(board)
+    # make fake corridor connections
+    for fake_num in range(3, random.randint(4, 7)):
+        fake_gen(board)
+    # make paths
+    path_gen(board)
     # return board
     return board
 
@@ -47,7 +52,7 @@ def movement(key, player, board):
     key_choice = ['w', 's', 'a', 'd']
     column_next = [0, 0, -1, 1]
     row_next = [-1, 1, 0, 0]
-    walkable = ['.', '#', '+']
+    walkable = [' ', '#', '+', ',', '.']
     for option in key_choice:
         if key == option:
             # next position
@@ -58,7 +63,7 @@ def movement(key, player, board):
                 return
             elif check_row not in range(0, len(board)):
                 return
-            elif check_pos_value(check_col, check_row, board) not in walkable:
+            elif board[check_row][check_col] not in walkable:
                 return
             # move player to the next locations
             player['column_position'] += column_next[key_choice.index(option)]
@@ -66,24 +71,22 @@ def movement(key, player, board):
             return
 
 
-def check_pos_value(board_col, board_row, board):
-    ''' return what is in the given position on the map '''
-    pos_value = board[board_row][board_col]
-    return pos_value
-
-
 def room_gen(board):
     ''' generates empty room on the board '''
     # set room parameters
-    r_height = random.randint(4, len(board) / 2)
-    r_width = random.randint(4, len(board[0]) / 2)
+    try:
+        r_height = random.randint(5, len(board) / 2)
+        r_width = random.randint(5, len(board[0]) / 2)
+    except RecursionError:
+        r_height = 5
+        r_width = 5
     # step 1: select random place on the board to start
-    row_pointer = random.randint(0, len(board) - r_height)
-    col_pointer = random.randint(0, len(board[0]) - r_width)
-    # step 2: scan if making room is possible
+    row_pointer = random.randint(1, len(board) - r_height - 1)
+    col_pointer = random.randint(1, len(board[0]) - r_width - 1)
+    # step 2: scan if making room is possible, one empty space around room
     can_build = True
-    for room_row in range(row_pointer, row_pointer + r_height):
-        for room_col in range(col_pointer, col_pointer + r_width):
+    for room_row in range(row_pointer - 1, row_pointer + r_height + 1):
+        for room_col in range(col_pointer - 1, col_pointer + r_width + 1):
             if board[room_row][room_col] == 'X' or board[room_row][room_col] == ',':
                 can_build = False
     # step 3: draw a room
@@ -91,15 +94,21 @@ def room_gen(board):
         for room_row in range(row_pointer, row_pointer + r_height):
             for room_col in range(col_pointer, col_pointer + r_width):
                 board[room_row][room_col] = 'X'
+        corridor_connector_list = []
         for room_row in range(row_pointer + 1, row_pointer + r_height - 1):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
                 board[room_row][room_col] = ','
+                temp = (room_row, room_col)
+                if temp[0] % 2 == 0 and temp[1] % 2 == 0:
+                    corridor_connector_list.append(temp)
+        # set corridor connector
+        corridor_connector = random.choice(corridor_connector_list)
+        board[corridor_connector[0]][corridor_connector[1]] = 'C'
     else:
         room_gen(board)
-    # step 4: scan if making door is possible
 
 
-def check_pos_around(board, col_num, row_num):
+def check_pos_around(board, row_num, col_num):
     ''' creates a list of values around current position '''
     surrounding = {
         'n': '',  # value of field to the north
@@ -127,9 +136,54 @@ def check_pos_around(board, col_num, row_num):
         surrounding['w'] = ''
     else:
         surrounding['w'] = board[row_num][col_num - 1]
-    if '.' in surrounding.values():
-        pass
+    return surrounding
 
 
-# for row in create_board(50, 30):
-#     print("".join(row))
+def path_gen(board):
+    ''' mark walls where making door is possible '''
+    # make list of positions of corridor connectors
+    corridor_connector_list = list_of_pos(board, 'C')
+    # link connecotrs randomly
+    while len(corridor_connector_list) > 1:
+        pointer = random.choice(corridor_connector_list)
+        corridor_connector_list.remove(pointer)
+        next_pointer = random.choice(corridor_connector_list)
+        # make list of path positions
+        path_list = []
+        for path_row in range(min(pointer[0], next_pointer[0]), max(pointer[0], next_pointer[0]) + 1):
+            for path_col in range(min(pointer[1], next_pointer[1]), max(pointer[1], next_pointer[1]) + 1):
+                temp = (path_row, path_col)
+                path_list.append(temp)
+        for path_row in range(min(pointer[0], next_pointer[0]) + 1, max(pointer[0], next_pointer[0]) ):
+            for path_col in range(min(pointer[1], next_pointer[1]) + 1, max(pointer[1], next_pointer[1]) ):
+                temp = (path_row, path_col)
+                path_list.remove(temp)
+        # change empty positions to path
+        for path_row, path_col in path_list:
+            if board[path_row][path_col] == ' ':
+                board[path_row][path_col] = '.'
+        # move pointer
+        pointer = next_pointer
+
+
+def fake_gen(board):
+    # make list of positions of empty fields
+    empty_pos_list = list_of_pos(board, ' ')
+    # select random positions to make fake corridors
+    fake_connection = random.choice(empty_pos_list)
+    # check if row and col numbers are even
+    if fake_connection[0] % 2 == 0 and fake_connection[1] % 2 == 0:
+        board[fake_connection[0]][fake_connection[1]] = 'C'
+    else:
+        fake_gen(board)
+
+
+def list_of_pos(board, criteria):
+    ''' make list of positions of criteria on board '''
+    pos_list = []
+    for row in range(0, len(board)):
+        for column in range(0, len(board[0])):
+            if board[row][column] == criteria:
+                temp = (row, column)
+                pos_list.append(temp)
+    return pos_list
