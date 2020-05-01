@@ -18,6 +18,9 @@ def create_board(width, height):
     # put some rooms on the board, max h/w is half of board h/w
     for room_num in range(1, random.randint(3, 8)):
         room_gen(board)
+    # make fake corridor connections
+    for fake_num in range(3, random.randint(4, 7)):
+        fake_gen(board)
     # make paths
     path_gen(board)
     # return board
@@ -78,12 +81,12 @@ def room_gen(board):
         r_height = 5
         r_width = 5
     # step 1: select random place on the board to start
-    row_pointer = random.randint(0, len(board) - r_height)
-    col_pointer = random.randint(0, len(board[0]) - r_width)
-    # step 2: scan if making room is possible
+    row_pointer = random.randint(1, len(board) - r_height - 1)
+    col_pointer = random.randint(1, len(board[0]) - r_width - 1)
+    # step 2: scan if making room is possible, one empty space around room
     can_build = True
-    for room_row in range(row_pointer, row_pointer + r_height):
-        for room_col in range(col_pointer, col_pointer + r_width):
+    for room_row in range(row_pointer - 1, row_pointer + r_height + 1):
+        for room_col in range(col_pointer - 1, col_pointer + r_width + 1):
             if board[room_row][room_col] == 'X' or board[room_row][room_col] == ',':
                 can_build = False
     # step 3: draw a room
@@ -96,7 +99,8 @@ def room_gen(board):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
                 board[room_row][room_col] = ','
                 temp = (room_row, room_col)
-                corridor_connector_list.append(temp)
+                if temp[0] % 2 == 0 and temp[1] % 2 == 0:
+                    corridor_connector_list.append(temp)
         # set corridor connector
         corridor_connector = random.choice(corridor_connector_list)
         board[corridor_connector[0]][corridor_connector[1]] = 'C'
@@ -138,12 +142,7 @@ def check_pos_around(board, row_num, col_num):
 def path_gen(board):
     ''' mark walls where making door is possible '''
     # make list of positions of corridor connectors
-    corridor_connector_list = []
-    for row in range(0, len(board)):
-        for column in range(0, len(board[0])):
-            if board[row][column] == 'C':
-                temp = (row, column)
-                corridor_connector_list.append(temp)
+    corridor_connector_list = list_of_pos(board, 'C')
     # link connecotrs randomly
     while len(corridor_connector_list) > 1:
         pointer = random.choice(corridor_connector_list)
@@ -165,3 +164,26 @@ def path_gen(board):
                 board[path_row][path_col] = '.'
         # move pointer
         pointer = next_pointer
+
+
+def fake_gen(board):
+    # make list of positions of empty fields
+    empty_pos_list = list_of_pos(board, ' ')
+    # select random positions to make fake corridors
+    fake_connection = random.choice(empty_pos_list)
+    # check if row and col numbers are even
+    if fake_connection[0] % 2 == 0 and fake_connection[1] % 2 == 0:
+        board[fake_connection[0]][fake_connection[1]] = 'C'
+    else:
+        fake_gen(board)
+
+
+def list_of_pos(board, criteria):
+    ''' make list of positions of criteria on board '''
+    pos_list = []
+    for row in range(0, len(board)):
+        for column in range(0, len(board[0])):
+            if board[row][column] == criteria:
+                temp = (row, column)
+                pos_list.append(temp)
+    return pos_list
