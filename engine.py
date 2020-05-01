@@ -58,18 +58,12 @@ def movement(key, player, board):
                 return
             elif check_row not in range(0, len(board)):
                 return
-            elif check_pos_value(check_col, check_row, board) not in walkable:
+            elif board[check_row][check_col] not in walkable:
                 return
             # move player to the next locations
             player['column_position'] += column_next[key_choice.index(option)]
             player['row_position'] += row_next[key_choice.index(option)]
             return
-
-
-def check_pos_value(board_col, board_row, board):
-    ''' return what is in the given position on the map '''
-    pos_value = board[board_row][board_col]
-    return pos_value
 
 
 def room_gen(board):
@@ -94,35 +88,25 @@ def room_gen(board):
         for room_row in range(row_pointer + 1, row_pointer + r_height - 1):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
                 board[room_row][room_col] = ','
-    else:
-        room_gen(board)
-    # step 4: scan if making door is possible
-    for row in range(row_pointer, row_pointer + r_height):
-        for column in range(col_pointer, col_pointer + r_width):
-            surr = check_pos_around(board, row, column)
-            # check if not next to end of board
-            if '' in surr.values():
-                pass
-            # check if can be door (vertical wall)
-            elif surr['n'] == surr['s'] == 'X' and (surr['w'] == ',' or surr['e'] == ','):
-                board[row][column] = 'D'
-            # check if can be door (horizontal wall)
-            elif surr['w'] == surr['e'] == 'X' and (surr['n'] == ',' or surr['s'] == ','):
-                board[row][column] = 'D'
-    # step 5: make door
-    door_not_added = True
-    while door_not_added:
+        # step 4: scan if making door is possible
+        wall_pos_list = []
         for row in range(row_pointer, row_pointer + r_height):
             for column in range(col_pointer, col_pointer + r_width):
-                if board[row][column] == 'D':
-                    if random.randint(1, 20) == 1:
-                        board[row][column] = '+'
-                        door_not_added = False
-    # step 6: close the walls
-    for row in range(row_pointer, row_pointer + r_height):
-        for column in range(col_pointer, col_pointer + r_width):
-            if board[row][column] == 'D':
-                board[row][column] = 'X'
+                surr = check_pos_around(board, row, column)
+                # check if not next to end of board
+                if '' not in surr.values():
+                    # check if can be door (vertical wall)
+                    if ',' in surr.values() and '.' in surr.values():
+                        if board[row][column] == 'X':
+                            # append position to the list
+                            temp = (row, column)
+                            wall_pos_list.append(temp)
+        # step 5: make door
+        if len(wall_pos_list) != 0:
+            new_door_pos = random.choice(wall_pos_list)
+            board[new_door_pos[0]][new_door_pos[1]] = '+'
+    else:
+        room_gen(board)
 
 
 def check_pos_around(board, row_num, col_num):
