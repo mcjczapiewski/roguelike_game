@@ -49,7 +49,7 @@ def movement(key, player, board):
     key_choice = ['w', 's', 'a', 'd']
     column_next = [0, 0, -1, 1]
     row_next = [-1, 1, 0, 0]
-    walkable = ['.','#','+']
+    walkable = ['.', '#', '+']
     for option in key_choice:
         if key == option:
             # next position
@@ -71,3 +71,11 @@ def check_pos_value(board_col, board_row, board):
     ''' return what is in the given position on the map '''
     pos_value = board[board_row][board_col]
     return pos_value
+
+
+def create_room(height, width):
+    ''' create room:
+        min room size = 3x3, max room size = board size - boarder
+        min door number = 1, max door number = 4
+        needs boarder of min 1 filed around
+    '''
