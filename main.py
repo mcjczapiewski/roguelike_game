@@ -3,8 +3,8 @@ import engine
 import ui
 
 PLAYER_ICON = '@'
-PLAYER_START_X = 3
-PLAYER_START_Y = 3
+PLAYER_START_X = 0
+PLAYER_START_Y = 0
 
 BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
@@ -30,7 +30,9 @@ def create_player():
 
 def main():
     player = create_player()
+    # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+    engine.get_spawn_pos(board, player)
 
     util.clear_screen()
     is_running = True

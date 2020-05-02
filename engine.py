@@ -1,6 +1,13 @@
 import random
 
 
+# characters used on the map
+floor_ch = ','
+wall_ch = '#'
+path_ch = '.'
+door_ch = '+'
+
+
 def create_board(width, height):
     '''
     Creates a new game board based on input parameters.
@@ -16,13 +23,15 @@ def create_board(width, height):
     # width == sublist length, height == number of sublists
     board = [[' ' for x in range(0, width - 2)] for y in range(0, height - 2)]
     # put some rooms on the board, max h/w is half of board h/w
-    for room_num in range(1, random.randint(3, 8)):
+    for room_num in range(0, random.randint(4, 6)):
         room_gen(board)
     # make fake corridor connections
-    for fake_num in range(3, random.randint(4, 7)):
+    for fake_num in range(0, random.randint(3, 5)):
         fake_gen(board)
     # make paths
     path_gen(board)
+    # make doors
+    door_gen(board)
     # return board
     return board
 
@@ -52,7 +61,7 @@ def movement(key, player, board):
     key_choice = ['w', 's', 'a', 'd']
     column_next = [0, 0, -1, 1]
     row_next = [-1, 1, 0, 0]
-    walkable = [' ', '#', '+', ',', '.']
+    walkable = [door_ch, floor_ch, path_ch]
     for option in key_choice:
         if key == option:
             # next position
@@ -87,17 +96,17 @@ def room_gen(board):
     can_build = True
     for room_row in range(row_pointer - 1, row_pointer + r_height + 1):
         for room_col in range(col_pointer - 1, col_pointer + r_width + 1):
-            if board[room_row][room_col] == 'X' or board[room_row][room_col] == ',':
+            if board[room_row][room_col] == wall_ch or board[room_row][room_col] == floor_ch:
                 can_build = False
     # step 3: draw a room
     if can_build:
         for room_row in range(row_pointer, row_pointer + r_height):
             for room_col in range(col_pointer, col_pointer + r_width):
-                board[room_row][room_col] = 'X'
+                board[room_row][room_col] = wall_ch
         corridor_connector_list = []
         for room_row in range(row_pointer + 1, row_pointer + r_height - 1):
             for room_col in range(col_pointer + 1, col_pointer + r_width - 1):
-                board[room_row][room_col] = ','
+                board[room_row][room_col] = floor_ch
                 temp = (room_row, room_col)
                 if temp[0] % 2 == 0 and temp[1] % 2 == 0:
                     corridor_connector_list.append(temp)
@@ -108,41 +117,32 @@ def room_gen(board):
         room_gen(board)
 
 
-def check_pos_around(board, row_num, col_num):
-    ''' creates a list of values around current position '''
-    surrounding = {
-        'n': '',  # value of field to the north
-        'e': '',  # value of field to the east
-        's': '',  # value of field to the south
-        'w': '',  # value of field to the west
-    }
-    # set north
-    if row_num == 0:
-        surrounding['n'] = ''
-    else:
-        surrounding['n'] = board[row_num - 1][col_num]
-    # set east
-    if col_num == len(board[0]) - 1:
-        surrounding['e'] = ''
-    else:
-        surrounding['e'] = board[row_num][col_num + 1]
-    # set south
-    if row_num == len(board) - 1:
-        surrounding['s'] = ''
-    else:
-        surrounding['s'] = board[row_num + 1][col_num]
-    # set west
-    if col_num == 0:
-        surrounding['w'] = ''
-    else:
-        surrounding['w'] = board[row_num][col_num - 1]
-    return surrounding
+def check_pos_around(board, curr_pos):
+    '''
+    curr_pos: tuple (row, col)
+    returns list of fields around a given field
+    '''
+    search_list = []
+    for row in range(curr_pos[0] - 1, curr_pos[0] + 2):
+        for col in range(curr_pos[1] - 1, curr_pos[1] + 2):
+            search_list.append(board[row][col])
+    return search_list
+
+
+def door_gen(board):
+    ''' make doors where possible '''
+    for door_candidate in list_of_pos(board, wall_ch):
+        checklist = check_pos_around(board, door_candidate)
+        if checklist.count(path_ch) == 1 and path_ch in [checklist[index] for index in [1, 3, 5, 7]]:
+            if ([checklist[index] for index in [1, 7]].count(wall_ch) == 2 or 
+                [checklist[index] for index in [3, 5]].count(wall_ch) == 2):
+                board[door_candidate[0]][door_candidate[1]] = door_ch
 
 
 def path_gen(board):
     ''' mark walls where making door is possible '''
     # make list of positions of corridor connectors
-    corridor_connector_list = list_of_pos(board, 'C')
+    corridor_connector_list = list_of_pos(board, 'C') + list_of_pos(board, path_ch)
     # link connecotrs randomly
     while len(corridor_connector_list) > 1:
         pointer = random.choice(corridor_connector_list)
@@ -150,20 +150,22 @@ def path_gen(board):
         next_pointer = random.choice(corridor_connector_list)
         # make list of path positions
         path_list = []
-        for path_row in range(min(pointer[0], next_pointer[0]), max(pointer[0], next_pointer[0]) + 1):
-            for path_col in range(min(pointer[1], next_pointer[1]), max(pointer[1], next_pointer[1]) + 1):
-                temp = (path_row, path_col)
-                path_list.append(temp)
-        for path_row in range(min(pointer[0], next_pointer[0]) + 1, max(pointer[0], next_pointer[0]) ):
-            for path_col in range(min(pointer[1], next_pointer[1]) + 1, max(pointer[1], next_pointer[1]) ):
-                temp = (path_row, path_col)
-                path_list.remove(temp)
+        row_range = range(min(pointer[0], next_pointer[0]), max(pointer[0], next_pointer[0]) + 1)
+        col_range = range(min(pointer[1], next_pointer[1]), max(pointer[1], next_pointer[1]) + 1)
+        for path_row in row_range:
+            for path_col in col_range:
+                if path_row in [min(row_range), max(row_range)] or path_col in [min(col_range), max(col_range)]:
+                    temp = (path_row, path_col)
+                    path_list.append(temp)
         # change empty positions to path
         for path_row, path_col in path_list:
             if board[path_row][path_col] == ' ':
-                board[path_row][path_col] = '.'
+                board[path_row][path_col] = path_ch
         # move pointer
         pointer = next_pointer
+    # clear connectors
+    for c_row, c_col in list_of_pos(board, 'C'):
+        board[c_row][c_col] = floor_ch
 
 
 def fake_gen(board):
@@ -173,7 +175,7 @@ def fake_gen(board):
     fake_connection = random.choice(empty_pos_list)
     # check if row and col numbers are even
     if fake_connection[0] % 2 == 0 and fake_connection[1] % 2 == 0:
-        board[fake_connection[0]][fake_connection[1]] = 'C'
+        board[fake_connection[0]][fake_connection[1]] = path_ch
     else:
         fake_gen(board)
 
@@ -187,3 +189,13 @@ def list_of_pos(board, criteria):
                 temp = (row, column)
                 pos_list.append(temp)
     return pos_list
+
+
+def get_spawn_pos(board, player):
+    ''' 
+    get position of player spawn on the map
+    return: tuple with (row, col) of spawn position
+    '''
+    new_pos = random.choice(list_of_pos(board, floor_ch))
+    player['column_position'] = new_pos[1]
+    player['row_position'] = new_pos[0]
