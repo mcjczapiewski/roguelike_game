@@ -26,10 +26,10 @@ def create_board(width, height):
     for room_num in range(0, random.randint(4, 6)):
         room_gen(board)
     # make fake corridor connections
-    for fake_num in range(0, random.randint(3, 5)):
+    for fake_num in range(0, 2):
         fake_gen(board)
     # make paths
-    path_gen(board)
+    path_gen(board, False)
     # make doors
     door_gen(board)
     # return board
@@ -139,15 +139,20 @@ def door_gen(board):
                 board[door_candidate[0]][door_candidate[1]] = door_ch
 
 
-def path_gen(board):
+def path_gen(board, random_match = True):
     ''' mark walls where making door is possible '''
     # make list of positions of corridor connectors
     corridor_connector_list = list_of_pos(board, 'C') + list_of_pos(board, path_ch)
     # link connecotrs randomly
     while len(corridor_connector_list) > 1:
-        pointer = random.choice(corridor_connector_list)
-        corridor_connector_list.remove(pointer)
-        next_pointer = random.choice(corridor_connector_list)
+        if random_match == True:
+            pointer = random.choice(corridor_connector_list)
+            corridor_connector_list.remove(pointer)
+            next_pointer = random.choice(corridor_connector_list)
+        else:
+            pointer = corridor_connector_list[0]
+            corridor_connector_list.remove(pointer)
+            next_pointer = corridor_connector_list[0]
         # make list of path positions
         path_list = []
         row_range = range(min(pointer[0], next_pointer[0]), max(pointer[0], next_pointer[0]) + 1)
