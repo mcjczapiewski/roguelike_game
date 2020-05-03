@@ -41,6 +41,7 @@ def main():
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
+        ui.display_stats()
         ui.display_board(board)
 
         key = util.key_pressed()

@@ -63,6 +63,7 @@ def create_characters():
             "inventory": ["bluzgi", "wyzwiska"],
         },
     }
+    return characters
 
 
 characters = create_characters()
