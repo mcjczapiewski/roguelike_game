@@ -31,6 +31,7 @@ def create_player():
 
 def main():
     player = create_player()
+    util.clear_screen()
     characters = interaction.characters
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
