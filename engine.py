@@ -94,11 +94,6 @@ def room_gen(board):
     # step 1: select random place on the board to start
     row_pointer = random.randint(1, len(board) - r_height - 1)
     col_pointer = random.randint(1, len(board[0]) - r_width - 1)
-    # corners of the room
-    room_corners.append(board[row_pointer][col_pointer])
-    room_corners.append(board[row_pointer + r_height - 1][col_pointer])
-    room_corners.append(board[row_pointer][col_pointer + r_width - 1])
-    room_corners.append(board[row_pointer + r_height - 1][col_pointer + r_width - 1])
     # step 2: scan if making room is possible, one empty space around room
     can_build = True
     for room_row in range(row_pointer - 1, row_pointer + r_height + 1):
@@ -117,6 +112,11 @@ def room_gen(board):
                 temp = (room_row, room_col)
                 if temp[0] % 2 == 0 and temp[1] % 2 == 0:
                     corridor_connector_list.append(temp)
+        # corners of the room
+        room_corners.append(board[row_pointer][col_pointer])
+        room_corners.append(board[row_pointer + r_height - 1][col_pointer])
+        room_corners.append(board[row_pointer][col_pointer + r_width - 1])
+        room_corners.append(board[row_pointer + r_height - 1][col_pointer + r_width - 1])
         # set corridor connector
         corridor_connector = random.choice(corridor_connector_list)
         board[corridor_connector[0]][corridor_connector[1]] = 'C'
