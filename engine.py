@@ -141,18 +141,18 @@ def door_gen(board):
     for door_candidate in list_of_pos(board, wall_ch):
         checklist = check_pos_around(board, door_candidate)
         if checklist.count(path_ch) == 1 and path_ch in [checklist[index] for index in [1, 3, 5, 7]]:
-            if ([checklist[index] for index in [1, 7]].count(wall_ch) == 2 or 
+            if ([checklist[index] for index in [1, 7]].count(wall_ch) == 2 or
                 [checklist[index] for index in [3, 5]].count(wall_ch) == 2):
                 board[door_candidate[0]][door_candidate[1]] = door_ch
 
 
-def path_gen(board, random_match = True):
+def path_gen(board, random_match=True):
     ''' mark walls where making door is possible '''
     # make list of positions of corridor connectors
     corridor_connector_list = list_of_pos(board, 'C') + list_of_pos(board, path_ch)
     # link connecotrs randomly
     while len(corridor_connector_list) > 1:
-        if random_match == True:
+        if random_match:
             pointer = random.choice(corridor_connector_list)
             corridor_connector_list.remove(pointer)
             next_pointer = random.choice(corridor_connector_list)
@@ -204,7 +204,7 @@ def list_of_pos(board, criteria):
 
 
 def get_spawn_pos(board, player):
-    ''' 
+    '''
     get position of player spawn on the map
     return: tuple with (row, col) of spawn position
     '''
