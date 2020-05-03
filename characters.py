@@ -1,10 +1,8 @@
 import random
 
-name = input('Podaj swoje imię')
 
-
-print(name)
 def create_characters():
+    name = input('Podaj swoje imię')
     characters = {
         "hero": {
             "name": name,
