@@ -1,29 +1,41 @@
 import util
 import engine
 import ui
+import interaction
 
 PLAYER_ICON = '@'
-PLAYER_START_X = 3
-PLAYER_START_Y = 3
+PLAYER_START_X = 0
+PLAYER_START_Y = 0
 
-BOARD_WIDTH = 30
-BOARD_HEIGHT = 20
+BOARD_WIDTH = 80
+BOARD_HEIGHT = 30
 
 
 def create_player():
     '''
-    Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
+    Creates a 'player' dictionary for storing all player related informations
+     - i.e. player icon, player position.
     Fell free to extend this dictionary!
 
     Returns:
     dictionary
     '''
-    pass
+    player = {
+        "icon": PLAYER_ICON,
+        "column_position": PLAYER_START_X,
+        "row_position": PLAYER_START_Y,
+        "temp_field": "",
+    }
+    return player
 
 
 def main():
     player = create_player()
+    util.clear_screen()
+    characters = interaction.characters
+    # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+    engine.get_spawn_pos(board, player)
 
     util.clear_screen()
     is_running = True
@@ -35,7 +47,8 @@ def main():
         if key == 'q':
             is_running = False
         else:
-            pass
+            # movement
+            engine.movement(key, player, board)
         util.clear_screen()
 
 
