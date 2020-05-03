@@ -19,10 +19,11 @@ def display_stats():
         f'Life: {stat["live"]}  ' +
         f'Attack: {stat["attack"]}  ' +
         f'Crit: {stat["chanses critical hit"]}  ' +
-        f'Points: {stat["points"]}'
+        f'Points: {stat["points"]}\n'
         )
 
 
+# add opening screen with game info, story line and player setup
 # add display dialog box
 # add display palyer stats
 # add display inventory
