@@ -1,6 +1,7 @@
 import util
 import engine
 import ui
+import characters
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 0
@@ -30,6 +31,7 @@ def create_player():
 
 def main():
     player = create_player()
+    characters = characters.create_characters()
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
