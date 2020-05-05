@@ -1,3 +1,6 @@
+import interaction
+
+
 def display_board(board):
     '''
     Displays complete game board on the screen
@@ -5,4 +8,22 @@ def display_board(board):
     Returns:
     Nothing
     '''
-    pass
+    for row in board:
+        print("".join(row))
+
+
+def display_stats():
+    stat = interaction.characters['hero']
+    print(
+        f'Player: {stat["name"]}  ' +
+        f'Life: {stat["live"]}  ' +
+        f'Attack: {stat["attack"]}  ' +
+        f'Crit: {stat["chanses critical hit"]}  ' +
+        f'Points: {stat["points"]}\n'
+        )
+
+
+# add opening screen with game info, story line and player setup
+# add display dialog box
+# add display palyer stats
+# add display inventory
