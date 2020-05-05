@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 def create_characters():
@@ -56,7 +57,7 @@ def create_characters():
             "inventory": ["mandat", "pączek"],
         },
         "enemy king": {
-            "name": "madka z horom curom",
+            "name": "madka z horom curkom",
             "live": 250,
             "attack": 100,
             "chanses critical hit": 10,
@@ -109,6 +110,11 @@ def fight(enemy):
                 characters["hero"]["live"] = characters["hero"]["live"] + 5
                 print("Brawo, rośnie Ci zdrowie")
             check_value = False
+            # wala z bossem
+            if enemy_name == "madka z horom curkom":
+                print("Niezle wymiatasz, Nie jestes leszczem, a nowym BOSSEM")
+                print("Pokonałeś głównego bohatera, Madke z Horom curkom, teraz wygrywasz")
+                sys.exit(0)
         characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack  # od życia bhatera odejmuje  atak wroga
         print("Tracisz ", enemy_attack, " życia.")
         print(random.choice(offence_words))
@@ -117,11 +123,9 @@ def fight(enemy):
             print('Dałeś ciała, przegrałeś z takim leszczem.')
             print(enemy_name)
             print("Następnym razem postaraj się bardziej")
+            sys.exit(0)
 
-        #inventory_long = len(enemy['inventory']) # ilość w inventarzu  wroga
-        #inventory_long = inventory_long - 1
-        #inventory_position = random.randit(0, inventory_long)
-        #inventory_chosen = enemy["inventory"][inventory_position] # podniesiony artefakt
+
         inventory_chosen = random.choice(enemy["inventory"])
         # teraz w zależności którą torbę wylosuje, doatanie tyle naklejek na świeżaki/słodziaki
         if inventory_chosen == "laska":
@@ -162,3 +166,8 @@ def fight(enemy):
             print('Teraz mam już ', characters["hero"]["live"], " życia")
             print("A co tu mi wypadło? \n Naklejki ze świeżakami, całe 5! ")
             characters["hero"]["points"] = characters["hero"]["points"] + 5
+        
+        #ustalam, że jak po walce ma ponad 100 pkt, to wygrywa
+        if characters["hero"]["points"] > 100:
+            print(enemy_name, " wygrałeś!")
+            print("Zebrałeś ponad 100 naklejek na świeżaki")
