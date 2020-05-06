@@ -9,12 +9,12 @@ player_was_here = [
 
 
 def display_board(board, was_here=player_was_here):
-    '''
+    """
     Displays complete game board on the screen
 
     Returns:
     Nothing
-    '''
+    """
     corners = engine.room_corners
     monkey = [engine.monkey["row"], engine.monkey["col"]]
     FAKE_NUMBER = 100
@@ -31,41 +31,38 @@ def display_board(board, was_here=player_was_here):
     current_col = monkey[1]
     for row in board:
         show_row = ""
-        if current_row - 3 < row_counter < current_row + 3:
-            if (
-                this_rectangle[0][0] <= row_counter <= this_rectangle[1][0]
-            ):
-                col_counter = 0
-                for mark in row:
-                    if (
-                        this_rectangle[1][1] <= col_counter <= this_rectangle[2][1]
-                    ):
-                        show_row += mark
-                        player_was_here[row_counter][col_counter] = 1
-                    elif player_was_here[row_counter][col_counter] == 1:
-                        show_row += mark
-                    else:
-                        show_row += " "
-                    col_counter += 1
-            elif monkey[0] == row_counter:
-                col_counter = 0
-                for mark in row:
-                    if monkey[1] == col_counter:
-                        show_row += mark
-                        player_was_here[row_counter][col_counter] = 1
-                    elif player_was_here[row_counter][col_counter] == 1:
-                        show_row += mark
-                    else:
-                        show_row += " "
-                    col_counter += 1
-            else:
-                col_counter = 0
-                for mark in row:
-                    if player_was_here[row_counter][col_counter] == 1:
-                        show_row += mark
-                    else:
-                        show_row += " "
-                    col_counter += 1
+        if this_rectangle[0][0] <= row_counter <= this_rectangle[1][0]:
+            col_counter = 0
+            for mark in row:
+                if this_rectangle[1][1] <= col_counter <= this_rectangle[2][1]:
+                    show_row += mark
+                    player_was_here[row_counter][col_counter] = 1
+                elif player_was_here[row_counter][col_counter] == 1:
+                    show_row += mark
+                else:
+                    show_row += " "
+                col_counter += 1
+        elif (
+            monkey[0] == row_counter
+            or current_row - 2 < row_counter < current_row + 2
+        ):
+            col_counter = 0
+            for mark in row:
+                if (
+                    current_col - 2 < col_counter < current_col + 2
+                    and monkey[1] == col_counter
+                    and monkey[0] == row_counter
+                ):
+                    show_row += mark
+                    player_was_here[row_counter][col_counter] = 1
+                elif (
+                    player_was_here[row_counter][col_counter] == 1
+                    or current_col - 2 < col_counter < current_col + 2
+                ):
+                    show_row += mark
+                else:
+                    show_row += " "
+                col_counter += 1
         else:
             col_counter = 0
             for mark in row:
@@ -79,14 +76,14 @@ def display_board(board, was_here=player_was_here):
 
 
 def display_stats():
-    stat = interaction.characters['hero']
+    stat = interaction.characters["hero"]
     print(
-        f'Player: {stat["name"]}  ' +
-        f'Life: {stat["live"]}  ' +
-        f'Attack: {stat["attack"]}  ' +
-        f'Crit: {stat["chanses critical hit"]}  ' +
-        f'Points: {stat["points"]}\n'
-        )
+        f'Player: {stat["name"]}  '
+        + f'Life: {stat["live"]}  '
+        + f'Attack: {stat["attack"]}  '
+        + f'Crit: {stat["chanses critical hit"]}  '
+        + f'Points: {stat["points"]}\n'
+    )
 
 
 # add opening screen with game info, story line and player setup
