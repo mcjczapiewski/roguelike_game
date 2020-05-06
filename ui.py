@@ -2,39 +2,80 @@ import interaction
 import engine
 import main
 
+player_was_here = [
+    [0 for x in range(0, main.BOARD_WIDTH - 2)]
+    for y in range(0, main.BOARD_HEIGHT - 2)
+]
 
-def display_board(board):
+
+def display_board(board, was_here=player_was_here):
     '''
     Displays complete game board on the screen
 
     Returns:
     Nothing
     '''
-    # for row in board:
-    #     print("".join(row))
-
-    corners = engine.room_corn()
+    corners = engine.room_corners
     monkey = [engine.monkey["row"], engine.monkey["col"]]
+    FAKE_NUMBER = 100
+    this_rectangle = [[FAKE_NUMBER, FAKE_NUMBER], [FAKE_NUMBER, FAKE_NUMBER]]
     for item in corners:
         if (
-            item[0][0] < monkey[0] < item[1][0]
-            and item[1][1] < monkey[1] < item[2][1]
+            item[0][0] <= monkey[0] <= item[1][0]
+            and item[1][1] <= monkey[1] <= item[2][1]
         ):
-            this_square = item
+            this_rectangle = item
             break
-    i = 0
+    row_counter = 0
+    current_row = monkey[0]
+    current_col = monkey[1]
     for row in board:
         show_row = ""
-        if this_square[0][0] <= i <= this_square[1][0]:
-            j = 0
-            for point in row:
-                if this_square[1][1] <= j <= this_square[2][1]:
-                    show_row += point
+        if current_row - 3 < row_counter < current_row + 3:
+            if (
+                this_rectangle[0][0] <= row_counter <= this_rectangle[1][0]
+            ):
+                col_counter = 0
+                for mark in row:
+                    if (
+                        this_rectangle[1][1] <= col_counter <= this_rectangle[2][1]
+                    ):
+                        show_row += mark
+                        player_was_here[row_counter][col_counter] = 1
+                    elif player_was_here[row_counter][col_counter] == 1:
+                        show_row += mark
+                    else:
+                        show_row += " "
+                    col_counter += 1
+            elif monkey[0] == row_counter:
+                col_counter = 0
+                for mark in row:
+                    if monkey[1] == col_counter:
+                        show_row += mark
+                        player_was_here[row_counter][col_counter] = 1
+                    elif player_was_here[row_counter][col_counter] == 1:
+                        show_row += mark
+                    else:
+                        show_row += " "
+                    col_counter += 1
+            else:
+                col_counter = 0
+                for mark in row:
+                    if player_was_here[row_counter][col_counter] == 1:
+                        show_row += mark
+                    else:
+                        show_row += " "
+                    col_counter += 1
+        else:
+            col_counter = 0
+            for mark in row:
+                if player_was_here[row_counter][col_counter] == 1:
+                    show_row += mark
                 else:
                     show_row += " "
-                j += 1
+                col_counter += 1
         print(show_row)
-        i += 1
+        row_counter += 1
 
 
 def display_stats():

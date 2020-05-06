@@ -14,10 +14,6 @@ monkey = {
 }
 
 
-def room_corn(room_corners=room_corners):
-    return room_corners
-
-
 def create_board(width, height):
     '''
     Creates a new game board based on input parameters.
