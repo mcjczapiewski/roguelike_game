@@ -34,7 +34,7 @@ def main():
     player = create_player()
     util.clear_screen()
     name = input('Podaj swoje imię: ')
-    characters = interaction.create_characters(name)
+    interaction.characters["hero"]["name"] = name
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
