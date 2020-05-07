@@ -2,9 +2,7 @@ import random
 import sys
 
 
-def create_characters():
-    name = input('Podaj swoje imię: ')
-    print(f'Witaj {name}!')
+def create_characters(name):
     characters = {
         "hero": {
             "name": name,
@@ -65,9 +63,6 @@ def create_characters():
         },
     }
     return characters
-
-
-characters = create_characters()
 
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
