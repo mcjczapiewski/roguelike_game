@@ -2,83 +2,76 @@ import random
 import sys
 
 
-def create_characters():
-    name = input('Podaj swoje imię: ')
-    print(f'Witaj {name}!')
-    characters = {
-        "hero": {
-            "name": name,
-            "live": 75,
-            "attack": 10,
-            "chanses critical hit": 3,  # podczas atachu tyle razy losujemy, żeby był max atak
-            "inventory": [],
-            "points": 0,
-        },
-        "enemy low": {
-            "name": "Moherowy beret",
-            "live": 25,
-            "attack": 2,
-            "chanses critical hit": 1,
-            "inventory": ["laska"],
-        },
-        "enemy middle low": {
-            "name": "moherowy beret z torebka",
-            "live": 30,
-            "attack": 4,
-            "chanses critical hit": 2,
-            "inventory": ["laska", "trebka"],
-        },
-        "enemy middle": {
-            "name": "gimbaza",
-            "live": 50,
-            "attack": 10,
-            "chanses critical hit": 5,
-            "inventory": ["glosnik blutuf", "czipsy", "plecak"],
-        },
-        "enemy middle upper 1": {
-            "name": "Biznesmen Janusz",
-            "live": 55,
-            "attack": 20,
-            "chanses critical hit": 6,
-            "inventory": ["teczka", "wyzwiska"],
-        },
-        "enemy middle upper 2": {
-            "name": "Madka Karyna",
-            "live": 55,
-            "attack": 20,
-            "chanses critical hit": 6,
-            "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
-        },
-        "enemy upper": {
-            "name": "Straznik Miejski",
-            "live": 55,
-            "attack": 70,
-            "chanses critical hit": 8,
-            "inventory": ["mandat", "pączek"],
-        },
-        "enemy king": {
-            "name": "madka z horom curkom",
-            "live": 250,
-            "attack": 100,
-            "chanses critical hit": 10,
-            "inventory": ["bluzgi", "wyzwiska"],
-        },
-    }
-    return characters
-
-
-characters = create_characters()
+characters = {
+    "hero": {
+        "name": "player",
+        "live": 75,
+        "attack": 10,
+        "chances critical hit": 3,  # podczas atachu tyle razy losujemy, żeby był max atak
+        "inventory": [],
+        "points": 0,
+    },
+    "enemy low": {
+        "name": "Moherowy beret",
+        "live": 25,
+        "attack": 2,
+        "chances critical hit": 1,
+        "inventory": ["laska"],
+    },
+    "enemy middle low": {
+        "name": "moherowy beret z torebka",
+        "live": 30,
+        "attack": 4,
+        "chances critical hit": 2,
+        "inventory": ["laska", "torebka"],
+    },
+    "enemy middle": {
+        "name": "gimbaza",
+        "live": 50,
+        "attack": 10,
+        "chances critical hit": 5,
+        "inventory": ["glosnik blutuf", "czipsy", "plecak"],
+    },
+    "enemy middle upper 1": {
+        "name": "Biznesmen Janusz",
+        "live": 55,
+        "attack": 20,
+        "chances critical hit": 6,
+        "inventory": ["teczka", "wyzwiska"],
+    },
+    "enemy middle upper 2": {
+        "name": "Madka Karyna",
+        "live": 55,
+        "attack": 20,
+        "chances critical hit": 6,
+        "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
+    },
+    "enemy upper": {
+        "name": "Straznik Miejski",
+        "live": 55,
+        "attack": 70,
+        "chances critical hit": 8,
+        "inventory": ["mandat", "pączek"],
+    },
+    "enemy king": {
+        "name": "madka z horom curkom",
+        "live": 250,
+        "attack": 100,
+        "chances critical hit": 10,
+        "inventory": ["bluzgi", "wyzwiska"],
+    },
+}
 
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
 # podczas walki tak, żeby wiele razy wygrywać z tym samym wrogiem.
 def fight(enemy):
     # zwroty przy ataku
-    hit_words = ["a masz", "Osz ty koczkdanie złap to", "teraz obroń się przed tym",
+    hit_words = ["a masz", "Osz ty koczkodanie złap to", "teraz obroń się przed tym",
                  "trzeba było ze mną nie zaczynać", "osz ty łobuzie, nie uciekniesz mi"]
     # zwroty kiedy obrywam
     offence_words = ["ała", "a to za co", "nie po twarzy", "zaraz ci oddam bambaryło",
-                     "tylko na tyle cie sztać?", "a to za co", "ajjj.. znowu w klejnoty"]
+                     "tylko na tyle cie stać?", "a to za co", "ajjj.. znowu w klejnoty"]
     check_value = True
     enemy_name = enemy["name"]
     print('Spotykasz na swojej drodze ', enemy_name, '. Ktoś tu jak zwykle szuka zaczepki,')
@@ -101,9 +94,9 @@ def fight(enemy):
                 characters["hero"]["attack"] = characters["hero"]["attack"] + 1
             if hero_add > 5:
                 print("Brawo, rośnie Ci szansa uderzenia krytycznego")
-                characters["hero"]["chanses critical hit"] = characters["hero"]["chanses critical hit"] + 1
+                characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
             if hero_add == 4:
-                characters["hero"]["chanses critical hit"] = characters["hero"]["chanses critical hit"] + 1
+                characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
                 characters["hero"]["attack"] = characters["hero"]["attack"] + 1
                 print("Brawo, rośnie Ci szansa uderzenia krytycznego i atak")
             if hero_add == 5:
@@ -112,10 +105,11 @@ def fight(enemy):
             check_value = False
             # wala z bossem
             if enemy_name == "madka z horom curkom":
-                print("Niezle wymiatasz, Nie jestes leszczem, a nowym BOSSEM")
+                print("Nieźle wymiatasz, Nie jesteś leszczem, a nowym BOSSEM")
                 print("Pokonałeś głównego bohatera, Madke z Horom curkom, teraz wygrywasz")
                 sys.exit(0)
-        characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack  # od życia bhatera odejmuje  atak wroga
+        # od życia bohatera odejmuje  atak wroga
+        characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
         print("Tracisz ", enemy_attack, " życia.")
         print(random.choice(offence_words))
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
@@ -125,9 +119,8 @@ def fight(enemy):
             print("Następnym razem postaraj się bardziej")
             sys.exit(0)
 
-
         inventory_chosen = random.choice(enemy["inventory"])
-        # teraz w zależności którą torbę wylosuje, doatanie tyle naklejek na świeżaki/słodziaki
+        # teraz w zależności którą torbę wylosuje, dostanie tyle naklejek na świeżaki/słodziaki
         if inventory_chosen == "laska":
             add_attack = random.randint(5, 10)
             print('podniosłeś laskę, dostajesz dodatkowy atak w ilości ', add_attack)
@@ -139,35 +132,39 @@ def fight(enemy):
             if inventory_chosen == "mandat":
                 print("Ten #^%&^* chciał mi wlepić mandat. Dobrze mu tak")
         if inventory_chosen == "czipsy" or inventory_chosen == "pączek":
-            add_heatlh = random.randint(10, 40)
-            print("O! ", inventory_chosen, "\n Tego mi było trzeba, czuje się ", add_heatlh, " razy lepiej")
-            characters["hero"]["live"] = characters["hero"]["live"] + add_heatlh
-        if inventory_chosen == "trebka":
-            print("O! ", inventory_chosen, "\n co my tu mamy w środku? Napój energetyk? \n Tego mi było trzeba, czuje się 2 razy lepiej")
+            add_health = random.randint(10, 40)
+            print("O! ", inventory_chosen, "\n Tego mi było trzeba, czuje się ", add_health, " razy lepiej")
+            characters["hero"]["live"] = characters["hero"]["live"] + add_health
+        if inventory_chosen == "torebka":
+            print("O! ", inventory_chosen, "\n co my tu mamy w środku? Napój energetyk?")
+            print("Tego mi było trzeba, czuje się 2 razy lepiej")
             characters["hero"]["live"] = characters["hero"]["live"] + 60
             print('Teraz mam już ', characters["hero"]["live"], " życia")
             print("A co tu mi wypadło? \n Naklejki ze świeżakami, aż 5! ")
             characters["hero"]["points"] = characters["hero"]["points"] + 5
         if inventory_chosen == "teczka":
-            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Mała cytrynówka? \n Tego mi było trzeba, czuje się 5 razy lepiej")
+            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Mała cytrynówka?")
+            print("Tego mi było trzeba, czuje się 5 razy lepiej")
             characters["hero"]["live"] = characters["hero"]["live"] + 70
             print('Teraz mam już ', characters["hero"]["live"], " życia")
             print("A co tu mi wypadło? \n Naklejki ze świeżakami, aż 10! ")
             characters["hero"]["points"] = characters["hero"]["points"] + 10
         if inventory_chosen == "torebka podróbka":
-            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Napój energetyk i elemy linki? \n Tego mi było trzeba, czuje się 5 razy lepiej")
+            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Napój energetyk i elemy linki?")
+            print("Tego mi było trzeba, czuje się 5 razy lepiej")
             characters["hero"]["live"] = characters["hero"]["live"] + 90
             print('Teraz mam już ', characters["hero"]["live"], " życia")
             print("A co tu mi wypadło? \n Naklejki ze świeżakami, aż 15! ")
             characters["hero"]["points"] = characters["hero"]["points"] + 15
         if inventory_chosen == "plecak":
-            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Skąd gówniaki biorą tyle piwa? Nie ważne. \n Tego mi było trzeba, czuje się 5 razy lepiej")
+            print("O! ", inventory_chosen, "\n  co my tu mamy w środku? Skąd gówniaki biorą tyle piwa? Nie ważne.")
+            print("Tego mi było trzeba, czuje się 5 razy lepiej")
             characters["hero"]["live"] = characters["hero"]["live"] + 40
             print('Teraz mam już ', characters["hero"]["live"], " życia")
             print("A co tu mi wypadło? \n Naklejki ze świeżakami, całe 5! ")
             characters["hero"]["points"] = characters["hero"]["points"] + 5
-        
-        #ustalam, że jak po walce ma ponad 100 pkt, to wygrywa
+
+        # ustalam, że jak po walce ma ponad 100 pkt, to wygrywa
         if characters["hero"]["points"] > 100:
             print(enemy_name, " wygrałeś!")
             print("Zebrałeś ponad 100 naklejek na świeżaki")

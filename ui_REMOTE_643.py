@@ -78,11 +78,11 @@ def display_board(board, was_here=player_was_here):
 def display_stats():
     stat = interaction.characters["hero"]
     print(
-        f'Gracz: {stat["name"]}  '
-        + f'Zdrowie: {stat["live"]}  '
-        + f'Atak: {stat["attack"]}  '
-        + f'Moc: {stat["chances critical hit"]}  '
-        + f'Punkty: {stat["points"]}\n'
+        f'Player: {stat["name"]}  '
+        + f'Life: {stat["live"]}  '
+        + f'Attack: {stat["attack"]}  '
+        + f'Crit: {stat["chances critical hit"]}  '
+        + f'Points: {stat["points"]}\n'
     )
 
 

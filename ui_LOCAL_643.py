@@ -81,7 +81,7 @@ def display_stats():
         f'Gracz: {stat["name"]}  '
         + f'Zdrowie: {stat["live"]}  '
         + f'Atak: {stat["attack"]}  '
-        + f'Moc: {stat["chances critical hit"]}  '
+        + f'Moc: {stat["chanses critical hit"]}  '
         + f'Punkty: {stat["points"]}\n'
     )
 

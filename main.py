@@ -1,3 +1,4 @@
+from time import sleep
 import util
 import engine
 import ui
@@ -10,34 +11,27 @@ PLAYER_START_Y = 0
 BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
 
-
-def create_player():
-    '''
-    Creates a 'player' dictionary for storing all player related informations
-     - i.e. player icon, player position.
-    Fell free to extend this dictionary!
-
-    Returns:
-    dictionary
-    '''
-    player = {
-        "icon": PLAYER_ICON,
-        "column_position": PLAYER_START_X,
-        "row_position": PLAYER_START_Y,
-        "temp_field": "",
-    }
-    return player
+player = {
+    "icon": PLAYER_ICON,
+    "column_position": PLAYER_START_X,
+    "row_position": PLAYER_START_Y,
+    "temp_field": "",
+}
 
 
 def main():
-    player = create_player()
     util.clear_screen()
-    characters = interaction.characters
+    name = input('Podaj swoje imię: ')
+    interaction.characters["hero"]["name"] = name
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
-
     util.clear_screen()
+    for second in reversed(range(1, 6)):
+        print(f'\n\n\n\n\n\tWitaj {name}!')
+        print(f"\n\n\tYour game will begin in \033[91m{second}\033[0m")
+        sleep(1)
+        util.clear_screen()
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
