@@ -2,67 +2,65 @@ import random
 import sys
 
 
-def create_characters(name):
-    characters = {
-        "hero": {
-            "name": name,
-            "live": 75,
-            "attack": 10,
-            "chanses critical hit": 3,  # podczas atachu tyle razy losujemy, żeby był max atak
-            "inventory": [],
-            "points": 0,
-        },
-        "enemy low": {
-            "name": "Moherowy beret",
-            "live": 25,
-            "attack": 2,
-            "chanses critical hit": 1,
-            "inventory": ["laska"],
-        },
-        "enemy middle low": {
-            "name": "moherowy beret z torebka",
-            "live": 30,
-            "attack": 4,
-            "chanses critical hit": 2,
-            "inventory": ["laska", "trebka"],
-        },
-        "enemy middle": {
-            "name": "gimbaza",
-            "live": 50,
-            "attack": 10,
-            "chanses critical hit": 5,
-            "inventory": ["glosnik blutuf", "czipsy", "plecak"],
-        },
-        "enemy middle upper 1": {
-            "name": "Biznesmen Janusz",
-            "live": 55,
-            "attack": 20,
-            "chanses critical hit": 6,
-            "inventory": ["teczka", "wyzwiska"],
-        },
-        "enemy middle upper 2": {
-            "name": "Madka Karyna",
-            "live": 55,
-            "attack": 20,
-            "chanses critical hit": 6,
-            "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
-        },
-        "enemy upper": {
-            "name": "Straznik Miejski",
-            "live": 55,
-            "attack": 70,
-            "chanses critical hit": 8,
-            "inventory": ["mandat", "pączek"],
-        },
-        "enemy king": {
-            "name": "madka z horom curkom",
-            "live": 250,
-            "attack": 100,
-            "chanses critical hit": 10,
-            "inventory": ["bluzgi", "wyzwiska"],
-        },
-    }
-    return characters
+characters = {
+    "hero": {
+        "name": "player",
+        "live": 75,
+        "attack": 10,
+        "chanses critical hit": 3,  # podczas atachu tyle razy losujemy, żeby był max atak
+        "inventory": [],
+        "points": 0,
+    },
+    "enemy low": {
+        "name": "Moherowy beret",
+        "live": 25,
+        "attack": 2,
+        "chanses critical hit": 1,
+        "inventory": ["laska"],
+    },
+    "enemy middle low": {
+        "name": "moherowy beret z torebka",
+        "live": 30,
+        "attack": 4,
+        "chanses critical hit": 2,
+        "inventory": ["laska", "trebka"],
+    },
+    "enemy middle": {
+        "name": "gimbaza",
+        "live": 50,
+        "attack": 10,
+        "chanses critical hit": 5,
+        "inventory": ["glosnik blutuf", "czipsy", "plecak"],
+    },
+    "enemy middle upper 1": {
+        "name": "Biznesmen Janusz",
+        "live": 55,
+        "attack": 20,
+        "chanses critical hit": 6,
+        "inventory": ["teczka", "wyzwiska"],
+    },
+    "enemy middle upper 2": {
+        "name": "Madka Karyna",
+        "live": 55,
+        "attack": 20,
+        "chanses critical hit": 6,
+        "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
+    },
+    "enemy upper": {
+        "name": "Straznik Miejski",
+        "live": 55,
+        "attack": 70,
+        "chanses critical hit": 8,
+        "inventory": ["mandat", "pączek"],
+    },
+    "enemy king": {
+        "name": "madka z horom curkom",
+        "live": 250,
+        "attack": 100,
+        "chanses critical hit": 10,
+        "inventory": ["bluzgi", "wyzwiska"],
+    },
+}
 
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
