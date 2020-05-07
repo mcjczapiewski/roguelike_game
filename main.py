@@ -11,27 +11,15 @@ PLAYER_START_Y = 0
 BOARD_WIDTH = 80
 BOARD_HEIGHT = 30
 
-
-def create_player():
-    '''
-    Creates a 'player' dictionary for storing all player related information
-     - i.e. player icon, player position.
-    Fell free to extend this dictionary!
-
-    Returns:
-    dictionary
-    '''
-    player = {
-        "icon": PLAYER_ICON,
-        "column_position": PLAYER_START_X,
-        "row_position": PLAYER_START_Y,
-        "temp_field": "",
-    }
-    return player
+player = {
+    "icon": PLAYER_ICON,
+    "column_position": PLAYER_START_X,
+    "row_position": PLAYER_START_Y,
+    "temp_field": "",
+}
 
 
 def main():
-    player = create_player()
     util.clear_screen()
     name = input('Podaj swoje imię: ')
     interaction.characters["hero"]["name"] = name
