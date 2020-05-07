@@ -1,3 +1,4 @@
+from time import sleep
 import util
 import engine
 import ui
@@ -32,12 +33,17 @@ def create_player():
 def main():
     player = create_player()
     util.clear_screen()
-    characters = interaction.characters
+    name = input('Podaj swoje imię: ')
+    characters = interaction.create_characters(name)
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
-
     util.clear_screen()
+    for second in reversed(range(1, 6)):
+        print(f'\n\n\n\n\n\tWitaj {name}!')
+        print(f"\n\n\tYour game will begin in \033[91m{second}\033[0m")
+        sleep(1)
+        util.clear_screen()
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
