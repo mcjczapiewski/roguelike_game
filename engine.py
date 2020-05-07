@@ -149,8 +149,10 @@ def door_gen(board):
     for door_candidate in list_of_pos(board, wall_ch):
         checklist = check_pos_around(board, door_candidate)
         if checklist.count(path_ch) == 1 and path_ch in [checklist[index] for index in [1, 3, 5, 7]]:
-            if ([checklist[index] for index in [1, 7]].count(wall_ch) == 2 or
-                [checklist[index] for index in [3, 5]].count(wall_ch) == 2):
+            if (
+                [checklist[index] for index in [1, 7]].count(wall_ch) == 2
+                or [checklist[index] for index in [3, 5]].count(wall_ch) == 2
+            ):
                 board[door_candidate[0]][door_candidate[1]] = door_ch
 
 
@@ -158,7 +160,7 @@ def path_gen(board, random_match=True):
     ''' mark walls where making door is possible '''
     # make list of positions of corridor connectors
     corridor_connector_list = list_of_pos(board, 'C') + list_of_pos(board, path_ch)
-    # link connecotrs randomly
+    # link connectors randomly
     while len(corridor_connector_list) > 1:
         if random_match:
             pointer = random.choice(corridor_connector_list)
@@ -174,7 +176,10 @@ def path_gen(board, random_match=True):
         col_range = range(min(pointer[1], next_pointer[1]), max(pointer[1], next_pointer[1]) + 1)
         for path_row in row_range:
             for path_col in col_range:
-                if path_row in [min(row_range), max(row_range)] or path_col in [min(col_range), max(col_range)]:
+                if (
+                    path_row in [min(row_range), max(row_range)]
+                    or path_col in [min(col_range), max(col_range)]
+                ):
                     temp = (path_row, path_col)
                     path_list.append(temp)
         # change empty positions to path

@@ -14,7 +14,7 @@ BOARD_HEIGHT = 30
 
 def create_player():
     '''
-    Creates a 'player' dictionary for storing all player related informations
+    Creates a 'player' dictionary for storing all player related information
      - i.e. player icon, player position.
     Fell free to extend this dictionary!
 
