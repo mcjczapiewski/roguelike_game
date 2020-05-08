@@ -86,6 +86,12 @@ def display_stats():
     )
 
 
+def display_fight(fight_text):
+    ui.display_stats()
+    ui.display_board(board)
+    print(fight_text)
+
+
 # add opening screen with game info, story line and player setup
 # add display dialog box
 # add display palyer stats
