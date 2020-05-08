@@ -89,6 +89,7 @@ def display_stats():
 
 
 def display_fight(fight_text):
+    util.clear_screen()
     display_stats()
     print(f'\n\n\n\n\n\t{fight_text}')
     key = util.key_pressed()
