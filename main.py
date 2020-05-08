@@ -21,7 +21,8 @@ player = {
 
 def main():
     util.clear_screen()
-    name = input('Podaj swoje imię: ')
+    # player info setup
+    name = input('\n\n\n\n\n\tPodaj swoje imię: ')
     interaction.characters["hero"]["name"] = name
     # level 1
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
