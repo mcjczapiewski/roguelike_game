@@ -88,22 +88,23 @@ def display_stats():
     )
 
 
-def display_stats_enemy(enemy):
-    stat = interaction.characters[enemy]
+def display_stats_fight(stat):
     print(
-        f'Przeciwnik: {stat["name"]}\t'
+        f'\t{stat["name"]}\n'
+        + f'\tZnacznik: {stat["print_character"]}\t'
         + f'Zdrowie: {stat["live"]}\t'
         + f'Atak: {stat["attack"]}\t'
-        + f'Moc: {stat["chances critical hit"]}\t'
-        + f'Punkty: {stat["points"]}\n'
+        + f'Moc: {stat["chances critical hit"]}\n'
     )
 
 
 def display_fight(fight_text, enemy):
     util.clear_screen()
-    display_stats()
-    display_stats_enemy(enemy)
-    print(f'\n\n\n\n\n\t{fight_text}')
+    print("\n\n\tKONFRONTACJA\n\n")
+    display_stats_fight(interaction.characters['hero'])
+    display_stats_fight(enemy)
+    print(f'\tAkcja: {fight_text}')
+    print(f'\n\tOpcje:\n\t[1] Wciśnij Q aby przerwac konfrontacje\n\t[2] Wciśnij dowolny klawisz aby kontynuować')
     key = util.key_pressed()
     if key != 'q':
         return

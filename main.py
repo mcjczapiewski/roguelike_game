@@ -28,7 +28,7 @@ def main():
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
     util.clear_screen()
-    for second in reversed(range(1, 6)):
+    for second in reversed(range(1, 2)):
         print(f'\n\n\n\n\n\tWitaj {name}!')
         print(f"\n\n\tYour game will begin in \033[91m{second}\033[0m")
         sleep(1)
