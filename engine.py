@@ -7,7 +7,7 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
-figh_ch = '+'
+enemy_list = ['+']
 
 room_corners = []
 monkey = {
@@ -83,9 +83,13 @@ def movement(key, player, board):
             elif check_row not in range(0, len(board)):
                 return
             # validate if the fight will happen
-            enemy_type = board[check_row][check_col]
-            elif board[check_row][check_col] in figh_ch:
-                interaction.fight(enemy_type)
+            elif board[check_row][check_col] in enemy_list:
+                # initiate fight
+                for key, value in interaction.characters.items():
+                    if value['print_character'] == board[check_row][check_col]:
+                        enemy_dict = interaction.characters[key]
+                        interaction.fight(enemy_dict)
+                # exit movement function
                 return
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:

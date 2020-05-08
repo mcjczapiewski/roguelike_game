@@ -1,6 +1,8 @@
 import interaction
 import engine
 import main
+import util
+
 
 player_was_here = [
     [0 for x in range(0, main.BOARD_WIDTH - 2)]
@@ -87,9 +89,11 @@ def display_stats():
 
 
 def display_fight(fight_text):
-    ui.display_stats()
-    ui.display_board(board)
-    print(fight_text)
+    display_stats()
+    print(f'\n\n\n\n\n\t{fight_text}')
+    key = util.key_pressed()
+    if key != 'q':
+        return
 
 
 # add opening screen with game info, story line and player setup

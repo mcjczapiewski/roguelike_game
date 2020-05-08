@@ -11,6 +11,7 @@ characters = {
         "chances critical hit": 3,  # podczas atachu tyle razy losujemy, żeby był max atak
         "inventory": [],
         "points": 0,
+        "print_character": '@',
     },
     "enemy low": {
         "name": "Moherowy beret",
@@ -18,6 +19,7 @@ characters = {
         "attack": 2,
         "chances critical hit": 1,
         "inventory": ["laska"],
+        "print_character": '+',  # change to M after testing
     },
     "enemy middle low": {
         "name": "moherowy beret z torebka",
@@ -25,6 +27,7 @@ characters = {
         "attack": 4,
         "chances critical hit": 2,
         "inventory": ["laska", "torebka"],
+        "print_character": 'T',
     },
     "enemy middle": {
         "name": "gimbaza",
@@ -32,6 +35,7 @@ characters = {
         "attack": 10,
         "chances critical hit": 5,
         "inventory": ["glosnik blutuf", "czipsy", "plecak"],
+        "print_character": 'G',
     },
     "enemy middle upper 1": {
         "name": "Biznesmen Janusz",
@@ -39,6 +43,7 @@ characters = {
         "attack": 20,
         "chances critical hit": 6,
         "inventory": ["teczka", "wyzwiska"],
+        "print_character": 'J',
     },
     "enemy middle upper 2": {
         "name": "Madka Karyna",
@@ -46,6 +51,7 @@ characters = {
         "attack": 20,
         "chances critical hit": 6,
         "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
+        "print_character": 'K',
     },
     "enemy upper": {
         "name": "Straznik Miejski",
@@ -53,6 +59,7 @@ characters = {
         "attack": 70,
         "chances critical hit": 8,
         "inventory": ["mandat", "pączek"],
+        "print_character": 'S',
     },
     "enemy king": {
         "name": "madka z horom curkom",
@@ -60,6 +67,7 @@ characters = {
         "attack": 100,
         "chances critical hit": 10,
         "inventory": ["bluzgi", "wyzwiska"],
+        "print_character": 'K',
     },
 }
 
@@ -67,6 +75,9 @@ characters = {
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
 # podczas walki tak, żeby wiele razy wygrywać z tym samym wrogiem.
 def fight(enemy):
+    ''' initiates fight with the enemy
+    enemy: dictionary with enemy characteristics (taken from the characters dict)
+    '''
     # zwroty przy ataku
     hit_words = ["a masz", "Osz ty koczkodanie złap to", "teraz obroń się przed tym",
                  "trzeba było ze mną nie zaczynać", "osz ty łobuzie, nie uciekniesz mi"]
