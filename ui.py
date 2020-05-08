@@ -100,16 +100,19 @@ def display_stats_fight(stat):
 
 def display_fight(fight_text, enemy):
     util.clear_screen()
-    print("\n\n\tKONFRONTACJA\n\n")
+    print("\n\n\tKONFRONTACJA\n")
     display_stats_fight(interaction.characters['hero'])
     display_stats_fight(enemy)
-    print(f'\t: {fight_text}')
+    print(f'\t~ {fight_text}')
     print(
         '\n\tOpcje' +
         '\n\t[1] Wciśnij Q aby przerwac konfrontacje' +
         '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów' +
         '\n\t[3] Wciśnij dowolny klawisz aby kontynuować'
     )
+    key = util.key_pressed().lower()
+    if key == 'q':
+        return False
 
 
 # add opening screen with game info, story line and player setup
