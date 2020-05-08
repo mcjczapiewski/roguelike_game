@@ -7,7 +7,7 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
-enemy_list = ['+']
+enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
 
 room_corners = []
 monkey = {

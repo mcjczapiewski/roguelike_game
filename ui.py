@@ -80,17 +80,29 @@ def display_board(board, was_here=player_was_here):
 def display_stats():
     stat = interaction.characters["hero"]
     print(
-        f'Gracz: {stat["name"]}  '
-        + f'Zdrowie: {stat["live"]}  '
-        + f'Atak: {stat["attack"]}  '
-        + f'Moc: {stat["chances critical hit"]}  '
+        f'Gracz: {stat["name"]}\t'
+        + f'Zdrowie: {stat["live"]}\t'
+        + f'Atak: {stat["attack"]}\t'
+        + f'Moc: {stat["chances critical hit"]}\t'
         + f'Punkty: {stat["points"]}\n'
     )
 
 
-def display_fight(fight_text):
+def display_stats_enemy(enemy):
+    stat = interaction.characters[enemy]
+    print(
+        f'Przeciwnik: {stat["name"]}\t'
+        + f'Zdrowie: {stat["live"]}\t'
+        + f'Atak: {stat["attack"]}\t'
+        + f'Moc: {stat["chances critical hit"]}\t'
+        + f'Punkty: {stat["points"]}\n'
+    )
+
+
+def display_fight(fight_text, enemy):
     util.clear_screen()
     display_stats()
+    display_stats_enemy(enemy)
     print(f'\n\n\n\n\n\t{fight_text}')
     key = util.key_pressed()
     if key != 'q':
