@@ -113,6 +113,8 @@ def display_fight(fight_text, enemy):
     key = util.key_pressed().lower()
     if key == 'q':
         return False
+    else:
+        return True
 
 
 # add opening screen with game info, story line and player setup

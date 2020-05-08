@@ -2,6 +2,7 @@ import random
 import sys
 import ui
 import util
+from time import sleep
 
 
 characters = {
@@ -20,7 +21,7 @@ characters = {
         "attack": 2,
         "chances critical hit": 1,
         "inventory": ["laska"],
-        "print_character": 'M',  # change to M after testing
+        "print_character": '+',  # change to M after testing
     },
     "enemy middle low": {
         "name": "moherowy beret z torebka",
@@ -80,44 +81,42 @@ def fight(enemy):
     enemy: dictionary with enemy characteristics (taken from the characters dict)
     '''
     # zwroty przy ataku
-    hit_words = ["a masz", "Osz ty koczkodanie złap to", "teraz obroń się przed tym",
+    hit_words = ["a masz", "osz ty koczkodanie złap to", "teraz obroń się przed tym",
                  "trzeba było ze mną nie zaczynać", "osz ty łobuzie, nie uciekniesz mi"]
     # zwroty kiedy obrywam
     offence_words = ["ała", "a to za co", "nie po twarzy", "zaraz ci oddam bambaryło",
                      "tylko na tyle cie stać?", "a to za co", "ajjj.. znowu w klejnoty"]
-    check_value = True
     enemy_name = enemy["name"]
-    ui.display_fight('Spotykasz na swojej drodze >> ' + enemy_name + ' <<. Ktoś tu jak zwykle szuka zaczepki...', enemy)
-    # wykomentowalem ponizsze na razie:
-        # ui.display_fight(input("Czy chcesz tej walki?"))
-        # ui.display_fight("Nie martw się, " + enemy_name + " nie odpuści i Cię atakuje")
+    # fight setup
+    check_value = ui.display_fight('Spotykasz na swojej drodze >> ' + enemy_name + ' <<.\n  Ktoś tu jak zwykle szuka zaczepki...', enemy)
     while check_value:
         # proceed with the fight
         hero_random = characters["hero"]["attack"]  # zapisuje max atak bohatera
         enemy_random = enemy["attack"]  # zapisuje max atak wroga
         hero_attack = random.randint(1, hero_random)  # losuje atak bohatera
         enemy_attack = random.randint(1, enemy_random)  # losuje atak wroga
-        enemy["live"] = enemy["live"] - hero_attack  # od życia wroga odejmuje atak bohatera
-        check_value = ui.display_fight(enemy_name + " traci " + str(hero_attack) + " zdrowia", enemy)
-        check_value = ui.display_fight(random.choice(hit_words), enemy)
+        # od życia wroga odejmuje atak bohatera
+        enemy["live"] = enemy["live"] - hero_attack  
+        ui.display_fight(random.choice(hit_words) + "\n\t" + enemy_name + " traci " + str(hero_attack) + " zdrowia", enemy)
 
         if enemy["live"] < 1:  # jeżeli wróg przegra
-            check_value = ui.display_fight("Ojoj, " + enemy_name + " już się nie rusza.", enemy)
+            outcome = ''
             hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
             if hero_add < 4:
-                check_value = ui.display_fight("Brawo, rośnie Ci atak", enemy)
+                outcome = "Brawo, rośnie Ci atak"
                 characters["hero"]["attack"] = characters["hero"]["attack"] + 1
             if hero_add > 5:
-                check_value = ui.display_fight("Brawo, rośnie Ci szansa uderzenia krytycznego", enemy)
+                outcome = "Brawo, rośnie Ci szansa uderzenia krytycznego"
                 characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
             if hero_add == 4:
+                outcome = "Brawo, rośnie Ci szansa uderzenia krytycznego i atak"
                 characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
                 characters["hero"]["attack"] = characters["hero"]["attack"] + 1
-                check_value = ui.display_fight("Brawo, rośnie Ci szansa uderzenia krytycznego i atak", enemy)
             if hero_add == 5:
+                outcome = "Brawo, rośnie Ci zdrowie"
                 characters["hero"]["live"] = characters["hero"]["live"] + 5
-                check_value = ui.display_fight("Brawo, rośnie Ci zdrowie", enemy)
             # kończe walke
+            ui.display_fight("Ojoj, " + enemy_name + " już się nie rusza.\n\t" + outcome, enemy)
             check_value = False
             # wala z bossem
             if enemy_name == "madka z horom curkom":
@@ -128,8 +127,8 @@ def fight(enemy):
                 end_game(win_text)
         # od życia bohatera odejmuje  atak wroga
         characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
-        check_value = ui.display_fight("Tracisz " + str(enemy_attack) + " życia.", enemy)
-        check_value = ui.display_fight(random.choice(offence_words), enemy)
+        ui.display_fight(random.choice(offence_words) + "\n\t" + "Tracisz " + str(enemy_attack) + " życia.", enemy)
+
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
             check_value = False
             death_text = (
@@ -143,45 +142,45 @@ def fight(enemy):
     # teraz w zależności którą torbę wylosuje, dostanie tyle naklejek na świeżaki/słodziaki
     if inventory_chosen == "laska":
         add_attack = random.randint(5, 10)
-        check_value = ui.display_fight('podniosłeś laskę, dostajesz dodatkowy atak w ilości ' + str(add_attack), enemy)
+        ui.display_fight('podniosłeś laskę, dostajesz dodatkowy atak w ilości ' + str(add_attack), enemy)
         characters["hero"]["attack"] = characters["hero"]["attack"] + add_attack
     if inventory_chosen == "glosnik blutuf":
-        check_value = ui.display_fight(inventory_chosen + ", a na kij mi to?", enemy)
+        ui.display_fight(inventory_chosen + ", a na kij mi to?", enemy)
     if inventory_chosen == "wyzwiska" or inventory_chosen == "bluzgi" or inventory_chosen == 'mandat':
-        check_value = ui.display_fight('A to %^$$%*^@# jeden', enemy)
+        ui.display_fight('A to %^$$%*^@# jeden', enemy)
         if inventory_chosen == "mandat":
-            check_value = ui.display_fight("Ten #^%&^* chciał mi wlepić mandat. Dobrze mu tak", enemy)
+            ui.display_fight("Ten #^%&^* chciał mi wlepić mandat. Dobrze mu tak", enemy)
     if inventory_chosen == "czipsy" or inventory_chosen == "pączek":
         add_health = random.randint(10, 40)
-        check_value = ui.display_fight("O! " + inventory_chosen + " Tego mi było trzeba, czuje się " + str(add_health) + " razy lepiej", enemy)
+        ui.display_fight("O! " + inventory_chosen + " Tego mi było trzeba, czuje się " + str(add_health) + " razy lepiej", enemy)
         characters["hero"]["live"] = characters["hero"]["live"] + add_health
     if inventory_chosen == "torebka":
-        check_value = ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Napój energetyk?", enemy)
-        check_value = ui.display_fight("Tego mi było trzeba, czuje się 2 razy lepiej", enemy)
+        ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Napój energetyk?" + 
+                         "\n\t  Tego mi było trzeba, czuje się 2 razy lepiej", enemy)
         characters["hero"]["live"] = characters["hero"]["live"] + 60
-        check_value = ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia", enemy)
-        check_value = ui.display_fight("A co tu mi wypadło? Naklejki ze świeżakami, aż 5! ", enemy)
+        ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia" +
+                         "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, aż 5! ", enemy)
         characters["hero"]["points"] = characters["hero"]["points"] + 5
     if inventory_chosen == "teczka":
-        check_value = ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Mała cytrynówka?", enemy)
-        check_value = ui.display_fight("Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
+        ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Mała cytrynówka?" + 
+                         "\n\t  Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
         characters["hero"]["live"] = characters["hero"]["live"] + 70
-        check_value = ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia", enemy)
-        check_value = ui.display_fight("A co tu mi wypadło? Naklejki ze świeżakami, aż 10! ", enemy)
+        ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia" +
+                         "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, aż 10! ", enemy)
         characters["hero"]["points"] = characters["hero"]["points"] + 10
     if inventory_chosen == "torebka podróbka":
-        check_value = ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Napój energetyk i elemy linki?", enemy)
-        check_value = ui.display_fight("Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
+        ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Napój energetyk i elemy linki?" + 
+                         "\n\t  Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
         characters["hero"]["live"] = characters["hero"]["live"] + 90
-        check_value = ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia", enemy)
-        check_value = ui.display_fight("A co tu mi wypadło? Naklejki ze świeżakami, aż 15! ", enemy)
+        ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia" + 
+                         "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, aż 15! ", enemy)
         characters["hero"]["points"] = characters["hero"]["points"] + 15
     if inventory_chosen == "plecak":
-        check_value = ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Skąd gówniaki biorą tyle piwa? Nie ważne.", enemy)
-        check_value = ui.display_fight("Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
+        ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Skąd gówniaki biorą tyle piwa? Nie ważne." + 
+                         "\n\t  Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
         characters["hero"]["live"] = characters["hero"]["live"] + 40
-        check_value = ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia", enemy)
-        check_value = ui.display_fight("A co tu mi wypadło? Naklejki ze świeżakami, całe 5! ", enemy)
+        ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " życia" + 
+                         "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, całe 5! ", enemy)
         characters["hero"]["points"] = characters["hero"]["points"] + 5
 
     # ustalam, że jak po walce ma ponad 100 pkt, to wygrywa
