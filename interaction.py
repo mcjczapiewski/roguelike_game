@@ -21,7 +21,7 @@ characters = {
         "attack": 2,
         "chances critical hit": 1,
         "inventory": ["laska"],
-        "print_character": '+',  # change to M after testing
+        "print_character": 'M',  # change to M after testing
     },
     "enemy middle low": {
         "name": "moherowy beret z torebka",
@@ -89,7 +89,7 @@ def fight(enemy):
     enemy_name = enemy["name"]
     # fight setup
     check_value = ui.display_fight('Ktoś tu jak zwykle szuka zaczepki...' + 
-                                   '\n\t  Spotykasz na swojej drodze >> ' + enemy_name + ' << Co robisz?', enemy)
+                                   '\n\t  Spotykasz na swojej drodze >> ' + enemy_name + ' << Co robisz?', enemy, quit_possible=True)
     fight_won = False
     while check_value:
         # proceed with the fight
@@ -130,7 +130,9 @@ def fight(enemy):
                 end_game(win_text)
         # od życia bohatera odejmuje  atak wroga
         characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
-        check_value = ui.display_fight(random.choice(offence_words) + "\n\t" + "Tracisz " + str(enemy_attack) + " zdrowia.", enemy)
+        check_value = ui.display_fight(random.choice(offence_words) + 
+                                       "\n\t" + "Tracisz " + str(enemy_attack) + 
+                                       " zdrowia.", enemy, quit_possible=True)
 
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
             check_value = False
