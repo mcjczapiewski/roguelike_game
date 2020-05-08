@@ -85,9 +85,9 @@ def movement(key, player, board):
             # validate if the fight will happen
             elif board[check_row][check_col] in enemy_list:
                 # initiate fight
-                for key, value in interaction.characters.items():
-                    if value['print_character'] == board[check_row][check_col]:
-                        enemy_dict = interaction.characters[key]
+                for dict_key, dict_value in interaction.characters.items():
+                    if dict_value['print_character'] == board[check_row][check_col]:
+                        enemy_dict = interaction.characters[dict_key]
                         interaction.fight(enemy_dict)
                 # exit movement function
                 return

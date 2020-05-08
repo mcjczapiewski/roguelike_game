@@ -41,7 +41,13 @@ def main():
 
         key = util.key_pressed()
         if key == 'q':
-            is_running = False
+            exit_game = ''
+            while exit_game not in ['Y', 'N']:
+                util.clear_screen()
+                print('\n\n\n\n\n\tCzy na pewno chcesz wyjsc z gry? Y/N')
+                exit_game = util.key_pressed().upper()
+                if exit_game == 'Y':
+                    is_running = False
         else:
             # movement
             engine.movement(key, player, board)

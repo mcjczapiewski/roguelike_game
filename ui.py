@@ -80,10 +80,10 @@ def display_board(board, was_here=player_was_here):
 def display_stats():
     stat = interaction.characters["hero"]
     print(
-        f'Gracz: {stat["name"]}\t'
-        + f'Zdrowie: {stat["live"]}\t'
-        + f'Atak: {stat["attack"]}\t'
-        + f'Moc: {stat["chances critical hit"]}\t'
+        f'Gracz: {stat["name"]}  '
+        + f'Zdrowie: {stat["live"]}  '
+        + f'Atak: {stat["attack"]}  '
+        + f'Moc: {stat["chances critical hit"]}  '
         + f'Punkty: {stat["points"]}\n'
     )
 
@@ -103,11 +103,13 @@ def display_fight(fight_text, enemy):
     print("\n\n\tKONFRONTACJA\n\n")
     display_stats_fight(interaction.characters['hero'])
     display_stats_fight(enemy)
-    print(f'\tAkcja: {fight_text}')
-    print(f'\n\tOpcje:\n\t[1] Wciśnij Q aby przerwac konfrontacje\n\t[2] Wciśnij dowolny klawisz aby kontynuować')
-    key = util.key_pressed()
-    if key != 'q':
-        return
+    print(f'\t: {fight_text}')
+    print(
+        '\n\tOpcje' +
+        '\n\t[1] Wciśnij Q aby przerwac konfrontacje' +
+        '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów' +
+        '\n\t[3] Wciśnij dowolny klawisz aby kontynuować'
+    )
 
 
 # add opening screen with game info, story line and player setup
