@@ -36,7 +36,7 @@ characters = {
         "attack": 10,
         "chances critical hit": 5,
         "inventory": ["glosnik blutuf", "czipsy", "plecak"],
-        "print_character": '+',
+        "print_character": 'G',
     },
     "enemy middle upper 1": {
         "name": "Biznesmen Janusz",
