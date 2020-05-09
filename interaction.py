@@ -22,6 +22,9 @@ characters = {
         "chances critical hit": 1,
         "inventory": ["laska"],
         "print_character": 'M',  # change to M after testing
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy middle low": {
         "name": "moherowy beret z torebka",
@@ -30,6 +33,9 @@ characters = {
         "chances critical hit": 2,
         "inventory": ["laska", "torebka"],
         "print_character": 'T',
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy middle": {
         "name": "gimbaza",
@@ -38,6 +44,9 @@ characters = {
         "chances critical hit": 5,
         "inventory": ["glosnik blutuf", "czipsy", "plecak"],
         "print_character": 'G',
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy middle upper 1": {
         "name": "Biznesmen Janusz",
@@ -46,6 +55,9 @@ characters = {
         "chances critical hit": 6,
         "inventory": ["teczka", "wyzwiska"],
         "print_character": 'J',
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy middle upper 2": {
         "name": "Madka Karyna",
@@ -54,6 +66,9 @@ characters = {
         "chances critical hit": 6,
         "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
         "print_character": 'K',
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy upper": {
         "name": "Straznik Miejski",
@@ -62,6 +77,9 @@ characters = {
         "chances critical hit": 8,
         "inventory": ["mandat", "pączek"],
         "print_character": 'S',
+        "column_position": "",
+        "row_position": "",
+        "temp_field": "",
     },
     "enemy king": {
         "name": "madka z horom curkom",
@@ -70,6 +88,9 @@ characters = {
         "chances critical hit": 10,
         "inventory": ["bluzgi", "wyzwiska"],
         "print_character": 'H',
+        "column_position": "",  # list
+        "row_position": "",  # list
+        "temp_field": "",
     },
 }
 
@@ -202,7 +223,7 @@ def fight(enemy):
 
 def end_game(some_text):
     for second in reversed(range(1, 6)):
-        print(f'\n\n\n\n\n\t{some_text}')
+        print(some_text)
         print(f"\n\n\tYour game will end in \033[91m{second}\033[0m")
         sleep(1)
         util.clear_screen()

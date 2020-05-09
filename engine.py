@@ -7,7 +7,7 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
-enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H', '+']
+enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
 
 room_corners = []
 monkey = {
@@ -236,3 +236,11 @@ def get_spawn_pos(board, player):
     new_pos = random.choice(list_of_pos(board, floor_ch))
     player['column_position'] = new_pos[1]
     player['row_position'] = new_pos[0]
+
+
+def put_enemies_on_board(board,  enemy):
+    '''
+    put 3 enemies on level 1
+    put 3 enemies on level 2
+    put boss on level 3
+    '''
