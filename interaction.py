@@ -21,7 +21,7 @@ characters = {
         "attack": 2,
         "chances critical hit": 1,
         "inventory": ["laska"],
-        "print_character": '+',  # change to M after testing
+        "print_character": 'M',  # change to M after testing
         "column_position": "",
         "row_position": "",
         "temp_field": "",
@@ -88,6 +88,17 @@ characters = {
         "chances critical hit": 10,
         "inventory": ["bluzgi", "wyzwiska"],
         "print_character": 'H', # po testach zmień na H
+        "column_position": "",  # list
+        "row_position": "",  # list
+        "temp_field": "",
+    },
+     "friend": {
+        "name": "pracownik biedry",
+        "live": 1,
+        "attack": 1,
+        "chances critical hit": 1,
+        "inventory": [],
+        "print_character": '+', # po testach zmień na F
         "column_position": "",  # list
         "row_position": "",  # list
         "temp_field": "",
@@ -246,3 +257,55 @@ def end_game(some_text):
         sleep(1)
         util.clear_screen()
     sys.exit(0)
+
+
+def frient_meet():
+    friend_hello = ["Cześć, jak Ci pomóc", "Dzień dobry, w czym mogę pomóc?", 
+                "Ooo... Siema, co tam u Ciebie", "Witam, co podać, w czym pomóc?",
+                "czego mi tu...", 
+                "Nawet nie można chwilę odpocząć. \n ktoś ciągle przeszkadza w pracy... \n Słucham", 
+                'Mordo Ty moja, co Ci trzeba', 
+                'Tylko nie mów szefowi co widziałeś,\n ja nic nie robiłem. \n Co chcesz?',
+                'Nawet nie można spokojnie zapalić jojnta w pracy... \n Co jest ziomek?',
+                'Ja ni panimaju, cio ty ciesz?', 'Tylko szybko, mów co chcesz']
+    friend_bye = ['wybacz teraz, trochę się spieszę, poszukaj kogoś innego',
+                  'Kurcze, nie rozumiem Ciebie zupełnie, ale masz wielkie skrzydła...\n Jesteś smokiem?\n kurde, to chyba nie były cukierki',
+                  'Ojeju, szef mnie woła, zaraz wrócę',
+                  'Wiesz co, nie pomogę Ci już więcej, bo jakoś Cie nie lubię...',
+                  'A teraz ziomuś wyluzuj, nie spinaj się. \n Idę zapalić, jak chcesz choć ze mną',
+                  'Chyba nie zrozumiałem co do mnie mówisz, jestem lekko przygłuchy'
+                  'O rany mam już dosyć tej parszywej roboty, idę pouczyć się programowania',
+                  'Czemu masz łuski, rogi, skrzydła... \n ku$&# to chyba nie były zwykłe landrynki',
+                  'Wybacz, ciśnie mnie, musze iść do kibla',
+                  'Czy chcesz porozmawiać o zbawieniu... \n Poczekaj, gdzie idziesz?'
+                  'A teraz idź mi sztąd łachmaniarzu, to sklep dla porządnych ludzi, madek z dziećmi i emerytów']
+     
+    friend_text = random.choice(friend_hello)
+    ui.display_meets('Spotkałeś pracownika obsługi Biedronki\n\n\n' + friend_text)
+    #jak wprowadzić dowolny tekst przez gracza
+    no_matter = input("tylko szybko \n")
+    
+    hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
+    if hero_add < 4:
+        outcome = " Jedyne, co mogę Ci dac to atak "
+        characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+    if hero_add > 5:
+        outcome = " Jedyne, co mogę Ci dac to szansa uderzenia krytycznego "
+        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
+    if hero_add == 4:
+        outcome = " Jedyne, co mogę Ci dac to szansa uderzenia krytycznego i atak +1 "
+        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
+        characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+    if hero_add == 5:
+        outcome = " Jedyne, co mogę Ci dac to zdrowie +5 "
+        characters["hero"]["live"] = characters["hero"]["live"] + 5
+    if hero_add == 7:        
+        outcome = outcome + "\n I masz jeszcze buha dla zdrowia "
+        characters["hero"]["live"] = characters["hero"]["live"] + 1
+
+    friend_text = random.choice(friend_bye)
+    text = outcome + '\n\n' + friend_text
+    ui.display_meets(text)
+
+
+
