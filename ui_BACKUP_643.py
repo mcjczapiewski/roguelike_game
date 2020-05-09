@@ -1,8 +1,6 @@
 import interaction
 import engine
 import main
-import util
-
 
 player_was_here = [
     [0 for x in range(0, main.BOARD_WIDTH - 2)]
@@ -80,56 +78,20 @@ def display_board(board, was_here=player_was_here):
 def display_stats():
     stat = interaction.characters["hero"]
     print(
+<<<<<<< HEAD
         f'Gracz: {stat["name"]}  '
         + f'Zdrowie: {stat["live"]}  '
         + f'Atak: {stat["attack"]}  '
-        + f'Moc: {stat["chances critical hit"]}  '
+        + f'Moc: {stat["chanses critical hit"]}  '
         + f'Punkty: {stat["points"]}\n'
+=======
+        f'Player: {stat["name"]}  '
+        + f'Life: {stat["live"]}  '
+        + f'Attack: {stat["attack"]}  '
+        + f'Crit: {stat["chances critical hit"]}  '
+        + f'Points: {stat["points"]}\n'
+>>>>>>> 58823709fb08b7d3fdb25e71ba7ecb362ceb7ceb
     )
-
-
-def display_stats_fight(stat):
-    print(
-        f'\t{stat["name"]}\n'
-        + f'\tZnacznik: {stat["print_character"]}\t'
-        + f'Zdrowie: {stat["live"]}\t'
-        + f'Atak: {stat["attack"]}\t'
-        + f'Moc: {stat["chances critical hit"]}\n'
-    )
-
-
-def display_fight(fight_text, enemy, quit_possible=False):
-    '''
-    displayes fight screen with fight text
-    fight_text: string
-    enemy: dictionary
-    quit_possible: True or False
-    '''
-    util.clear_screen()
-    print("\n\n\tKONFRONTACJA\n")
-    display_stats_fight(interaction.characters['hero'])
-    display_stats_fight(enemy)
-    print(f'\t~ {fight_text}')
-    if quit_possible:
-        print(
-            '\n\tOpcje' +
-            '\n\t[1] Wciśnij Q aby przerwac konfrontacje' +
-            '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów' +
-            '\n\t[3] Wciśnij dowolny klawisz aby kontynuować'
-        )
-        key = util.key_pressed().lower()
-        if key == 'q':
-            return False
-        else:
-            return True
-    else:
-        print(
-            '\n\tOpcje' +
-            '\n\t[1] Wciśnij I aby użyć posiadanych przedmiotów' +
-            '\n\t[2] Wciśnij dowolny klawisz aby kontynuować'
-        )
-        key = util.key_pressed().lower()
-        return True
 
 
 # add opening screen with game info, story line and player setup

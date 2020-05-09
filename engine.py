@@ -1,4 +1,5 @@
 import random
+import interaction
 
 
 # characters used on the map
@@ -6,6 +7,7 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
+enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H', '+']
 
 room_corners = []
 monkey = {
@@ -80,6 +82,16 @@ def movement(key, player, board):
                 return
             elif check_row not in range(0, len(board)):
                 return
+            # validate if the fight will happen
+            elif board[check_row][check_col] in enemy_list:
+                # initiate fight
+                for dict_key, dict_value in interaction.characters.items():
+                    if dict_value['print_character'] == board[check_row][check_col]:
+                        enemy_dict = interaction.characters[dict_key]
+                        interaction.fight(enemy_dict)
+                # exit movement function
+                return
+            # validate if walkable field
             elif board[check_row][check_col] not in walkable:
                 return
             # move player to the next locations
