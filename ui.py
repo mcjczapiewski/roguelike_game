@@ -93,7 +93,7 @@ def display_stats_fight(stat):
         f'\t{stat["name"]}\n'
         + f'\tZnacznik: {stat["print_character"]}\t'
         + f'Zdrowie: {stat["live"]}\t'
-        + f'Atak: {stat["attack"]}\t'
+        + f'Atak: {stat["attack"]}  \t'
         + f'Moc: {stat["chances critical hit"]}\n'
     )
 
@@ -112,10 +112,10 @@ def display_fight(fight_text, enemy, quit_possible=False):
     print(f'\t~ {fight_text}')
     if quit_possible:
         print(
-            '\n\tOpcje' +
-            '\n\t[1] Wciśnij Q aby przerwac konfrontacje' +
-            '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów' +
-            '\n\t[3] Wciśnij dowolny klawisz aby kontynuować'
+            '\n\tOpcje'
+            + '\n\t[1] Wciśnij Q aby przerwac konfrontacje'
+            + '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów'
+            + '\n\t[3] Wciśnij dowolny klawisz aby kontynuować walkę'
         )
         key = util.key_pressed().lower()
         if key == 'q':
@@ -124,12 +124,13 @@ def display_fight(fight_text, enemy, quit_possible=False):
             return True
     else:
         print(
-            '\n\tOpcje' +
-            '\n\t[1] Wciśnij I aby użyć posiadanych przedmiotów' +
-            '\n\t[2] Wciśnij dowolny klawisz aby kontynuować'
+            '\n\tOpcje'
+            + '\n\t[1] Wciśnij I aby użyć posiadanych przedmiotów'
+            + '\n\t[2] Wciśnij dowolny klawisz aby kontynuować walkę'
         )
         key = util.key_pressed().lower()
         return True
+
 
 def display_meets(txt, quit_possible=False):
     '''
@@ -142,11 +143,10 @@ def display_meets(txt, quit_possible=False):
     print("\n\n\tSPOTYKASZ PRACOWNIKA BIEDRY\n")
     print(f'\t~ {txt}')
 
-
     if quit_possible:
         print(
-            '\n\tOpcje' +
-            '\n\tWciśnij Q aby przerwac konfrontacje'
+            '\n\tOpcje'
+            + '\n\tWciśnij Q aby przerwac konfrontacje'
         )
         key = util.key_pressed().lower()
         if key == 'q':
