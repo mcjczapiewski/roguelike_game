@@ -7,7 +7,8 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
-enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H', '+']
+enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
+friend_list = ['F']
 
 room_corners = []
 monkey = {
@@ -89,7 +90,12 @@ def movement(key, player, board):
                     if dict_value['print_character'] == board[check_row][check_col]:
                         enemy_dict = interaction.characters[dict_key]
                         interaction.fight(enemy_dict)
-                s exit movement function
+                # exit movement function
+                return
+            # Meets the friend
+            elif board[check_row][check_col] in friend_list:
+                interaction.frient_meet()
+
                 return
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:

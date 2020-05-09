@@ -131,6 +131,33 @@ def display_fight(fight_text, enemy, quit_possible=False):
         key = util.key_pressed().lower()
         return True
 
+def display_meets(txt, quit_possible=False):
+    '''
+    displayes meets screen with text
+    fight_text: string
+    enemy: dictionary
+    quit_possible: True or False
+    '''
+    util.clear_screen()
+    print("\n\n\tSPOTYKASZ PRACOWNIKA BIEDRY\n")
+    print(f'\t~ {txt}')
+
+
+    if quit_possible:
+        print(
+            '\n\tOpcje' +
+            '\n\tWciśnij Q aby przerwac konfrontacje'
+        )
+        key = util.key_pressed().lower()
+        if key == 'q':
+            return False
+        else:
+            return True
+    else:
+        print('')
+        key = util.key_pressed().lower()
+        return True
+
 
 # add opening screen with game info, story line and player setup
 # add display dialog box
