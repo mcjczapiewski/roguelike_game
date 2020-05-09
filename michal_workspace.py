@@ -87,6 +87,7 @@ def fight(enemy):
 
         if enemy[["live"]] < 1: # jeżeli wróg przegra
             print("Ojoj, ", enemy_name, " już się nie rusza.")
+            check_value = False
             hero_add = random.randint(1, 7) # losuję co zdobędzie bohater
             if hero_add < 4:
                 print("Brawo, rośnie Ci atak")
@@ -101,6 +102,7 @@ def fight(enemy):
             if hero_add == 5:
                 characters["hero"["live"]] = characters["hero"["live"]] + 5
                 print("Brawo, rośnie Ci zdrowie")
+            break
             check_value = False
         characters["hero"["live"]] = characters["hero"["live"]] - enemy_attack # od życia bhatera odejmuje  atak wroga
         print("Tracisz ", enemy_attack, " życia.")
