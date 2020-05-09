@@ -89,7 +89,7 @@ def movement(key, player, board):
                     if dict_value['print_character'] == board[check_row][check_col]:
                         enemy_dict = interaction.characters[dict_key]
                         interaction.fight(enemy_dict)
-                # exit movement function
+                s exit movement function
                 return
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:

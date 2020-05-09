@@ -50,7 +50,10 @@ def main():
                     is_running = False
         else:
             # movement
-            engine.movement(key, player, board)
+            level_change = engine.movement(key, player, board)
+            if level_change:
+                board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+                engine.get_spawn_pos(board, player)
         util.clear_screen()
 
 
