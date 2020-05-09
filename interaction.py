@@ -98,7 +98,7 @@ characters = {
         "attack": 1,
         "chances critical hit": 1,
         "inventory": [],
-        "print_character": '+', # po testach zmień na F
+        "print_character": 'F', # po testach zmień na F
         "column_position": "",  # list
         "row_position": "",  # list
         "temp_field": "",
@@ -108,7 +108,7 @@ characters = {
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
 # podczas walki tak, żeby wiele razy wygrywać z tym samym wrogiem.
-def fight(enemy):
+def fight(enemy, mobs_on_board, enemy_position, board):
     ''' initiates fight with the enemy
     enemy: dictionary with enemy characteristics (taken from the characters dict)
     '''
@@ -149,6 +149,8 @@ def fight(enemy):
         ui.display_fight(random.choice(hit_words) + "\n\t" + enemy_name + " traci " + str(hero_attack) + " zdrowia", enemy)
 
         if enemy_live < 1:  # jeżeli wróg przegra
+            mobs_on_board.remove(enemy_position)
+            board[enemy_position[0]][enemy_position[1]] = ","
             outcome = ''
             hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
             if hero_add < 4:
@@ -259,7 +261,7 @@ def end_game(some_text):
     sys.exit(0)
 
 
-def frient_meet():
+def friend_meet():
     friend_hello = ["Cześć, jak Ci pomóc", "Dzień dobry, w czym mogę pomóc?", 
                 "Ooo... Siema, co tam u Ciebie", "Witam, co podać, w czym pomóc?",
                 "czego mi tu...", 
