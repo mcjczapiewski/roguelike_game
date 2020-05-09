@@ -17,6 +17,8 @@ column_next = [0, 0, -1, 1]
 row_next = [-1, 1, 0, 0]
 
 room_corners = []
+mobs_on_board = []
+friends_on_board = []
 monkey = {
     "row": 0,
     "col": 0
@@ -92,12 +94,13 @@ def movement(key, player, board):
                 for dict_key, dict_value in interaction.characters.items():
                     if dict_value['print_character'] == board[check_row][check_col]:
                         enemy_dict = interaction.characters[dict_key]
-                        interaction.fight(enemy_dict)
+                        enemy_position = [check_row, check_col]
+                        interaction.fight(enemy_dict, mobs_on_board, enemy_position, board)
                 # exit movement function
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
-                interaction.frient_meet()
+                interaction.friend_meet()
                 return
             # validate if corridor to another level
             elif board[check_row][check_col] in level_corr_list:
@@ -249,15 +252,86 @@ def get_spawn_pos(board, player):
     player['row_position'] = new_pos[0]
 
 
-def put_enemies_on_board(board,  enemy):
+def put_enemies_on_board(board, enemies):
     '''
     put 3 enemies on level 1
     put 3 enemies on level 2
     put boss on level 3
     '''
-    monkey = [monkey["row"], monkey["col"]]
+    random.shuffle(room_corners)
+    lvl_1_mobs = enemies[0:2]
+    lvl_2_mobs = enemies[3:5]
+    lvl_3_boss = enemies[6]
     for room in room_corners:
+        x_range = abs(room[0][0] - room[1][0] - 2)
+        y_range = abs(room[1][1] - room[2][1] - 2)
+        room_size = x_range * y_range
+        if room_size > 300:
+            possible_mobs = 3
+        elif 100 < room_size <= 300:
+            possible_mobs = 2
+        else:
+            possible_mobs = 1
+        for number in range(possible_mobs):
+            board_mark = ""
+            # DODAĆ ROZRÓŻNIENIE NA POZIOMY
+            enemy = random.choice(lvl_1_mobs)
+            while board_mark != ",":
+                mob_x = random.randint(room[0][0] + 1, room[1][0] - 1)
+                mob_y = random.randint(room[1][1] + 1, room[2][1] - 1)
+                if board[mob_x][mob_y] == ",":
+                    board_mark = ","
+                    board[mob_x][mob_y] = enemy
+                    mobs_on_board.append([mob_x, mob_y])
 
+
+def put_friends_on_board(board, friends):
+    '''
+    put friends on board
+    '''
+    possible_friends_number = random.randint(1, len(room_corners) - 1)
+    number_of_friends = 0
+    rooms_with_friends = []
+    while number_of_friends < possible_friends_number:
+        new_room = random.choice(room_corners)
+        if new_room not in rooms_with_friends:
+            rooms_with_friends.append(new_room)
+            number_of_friends += 1
+    for room in rooms_with_friends:
+        friend = random.choice(friends)
+        board_mark = ""
+        while board_mark != ",":
+            friend_x = random.randint(room[0][0] + 1, room[1][0] - 1)
+            friend_y = random.randint(room[1][1] + 1, room[2][1] - 1)
+            if board[friend_x][friend_y] == ",":
+                board_mark = ","
+                board[friend_x][friend_y] = friend
+                friends_on_board.append([friend_x, friend_y])
+
+
+def mobs_movement(board, mobs, player):
+    player_xy = [player["row_position"], player["column_position"]]
+    for mob in mobs:
+        mob_mark = board[mob[0]][mob[1]]
+        mobs.remove(mob)
+        possible_move = []
+        row_col = [[0, -1], [0, 1], [1, 0], [-1, 0], [0, 0]]
+        for coordinate in row_col:
+            possible_move.append([mob[0] + coordinate[0], mob[1] + coordinate[1]])
+        board_mark = ""
+        while board_mark != ",":
+            new_position = random.choice(possible_move)
+            if (
+                board[new_position[0]][new_position[1]] in [",", mob_mark]
+                and new_position != player_xy
+                and new_position not in mobs
+            ):
+                board_mark = ","
+                board[mob[0]][mob[1]] = ","
+                board[new_position[0]][new_position[1]] = mob_mark
+                mobs.append(new_position)
+            else:
+                possible_move.remove(new_position)
 
 
 def levels_generator(next_level):
