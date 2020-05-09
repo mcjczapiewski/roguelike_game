@@ -8,8 +8,8 @@ from time import sleep
 characters = {
     "hero": {
         "name": "player",
-        "live": 75,
-        "attack": 10,
+        "live": 75, #standardowe życie 75
+        "attack": 10, #standardowy atak 10
         "chances critical hit": 3,  # podczas ataku tyle razy losujemy, żeby był max atak
         "inventory": [],
         "points": 0,
@@ -21,7 +21,7 @@ characters = {
         "attack": 2,
         "chances critical hit": 1,
         "inventory": ["laska"],
-        "print_character": 'M',  # change to M after testing
+        "print_character": '+',  # change to M after testing
         "column_position": "",
         "row_position": "",
         "temp_field": "",
@@ -87,7 +87,7 @@ characters = {
         "attack": 100,
         "chances critical hit": 10,
         "inventory": ["bluzgi", "wyzwiska"],
-        "print_character": 'H',
+        "print_character": 'H', # po testach zmień na H
         "column_position": "",  # list
         "row_position": "",  # list
         "temp_field": "",
@@ -108,6 +108,8 @@ def fight(enemy):
     offence_words = ["ała", "a to za co", "nie po twarzy", "zaraz ci oddam bambaryło",
                      "tylko na tyle cie stać?", "a to za co", "ajjj.. znowu w klejnoty"]
     enemy_name = enemy["name"]
+    enemy_live = enemy["live"]
+    enemy_stats_live = enemy["live"]
     # fight setup
     check_value = ui.display_fight('Ktoś tu jak zwykle szuka zaczepki...' + 
                                    '\n\t  Spotykasz na swojej drodze >> ' + enemy_name + ' << Co robisz?', enemy, quit_possible=True)
@@ -115,14 +117,27 @@ def fight(enemy):
     while check_value:
         # proceed with the fight
         hero_random = characters["hero"]["attack"]  # zapisuje max atak bohatera
+        hero_critical = characters["hero"]["chances critical hit"]
         enemy_random = enemy["attack"]  # zapisuje max atak wroga
+        enemy_critical = enemy["chances critical hit"]
         hero_attack = random.randint(1, hero_random)  # losuje atak bohatera
+        for n in range(1, hero_critical): # losuje krytyczny atak bohatera
+            random_critic = random.randint(1, 15)
+            if random_critic == 1:
+                hero_attack = hero_random
+        
         enemy_attack = random.randint(1, enemy_random)  # losuje atak wroga
+        for n in range(1, enemy_critical): # losuje krytyczny atak wroga
+            random_critic = random.randint(1, 25)
+            if random_critic == 1:
+                enemy_attack = enemy_critical
+
         # od życia wroga odejmuje atak bohatera
-        enemy["live"] = enemy["live"] - hero_attack  
+        enemy_live = enemy_live - hero_attack  
+        enemy["live"] = enemy["live"] - hero_attack
         ui.display_fight(random.choice(hit_words) + "\n\t" + enemy_name + " traci " + str(hero_attack) + " zdrowia", enemy)
 
-        if enemy["live"] < 1:  # jeżeli wróg przegra
+        if enemy_live < 1:  # jeżeli wróg przegra
             outcome = ''
             hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
             if hero_add < 4:
@@ -149,11 +164,14 @@ def fight(enemy):
                     "Pokonałeś głównego bohatera, Madke z Horom curkom, teraz wygrywasz"
                 )
                 end_game(win_text)
-        # od życia bohatera odejmuje  atak wroga
-        characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
-        check_value = ui.display_fight(random.choice(offence_words) + 
-                                       "\n\t" + "Tracisz " + str(enemy_attack) + 
-                                       " zdrowia.", enemy, quit_possible=True)
+            enemy["live"] = enemy_stats_live
+            break
+        if enemy_live > 0:                
+            # od życia bohatera odejmuje  atak wroga
+            characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
+            check_value = ui.display_fight(random.choice(offence_words) + 
+                                        "\n\t" + "Tracisz " + str(enemy_attack) + 
+                                        " zdrowia.", enemy, quit_possible=True)
 
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
             check_value = False
