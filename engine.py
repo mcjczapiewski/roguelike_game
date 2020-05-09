@@ -12,6 +12,9 @@ door_ch = '+'
 enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
 friend_list = ['F']
 level_corr_list = ['1', '2', '3']
+key_choice = ['w', 's', 'a', 'd']
+column_next = [0, 0, -1, 1]
+row_next = [-1, 1, 0, 0]
 
 room_corners = []
 monkey = {
@@ -72,9 +75,6 @@ def movement(key, player, board):
     # retrieve the original value of the field
     board[player['row_position']][player['column_position']] = player['temp_field']
     # movement
-    key_choice = ['w', 's', 'a', 'd']
-    column_next = [0, 0, -1, 1]
-    row_next = [-1, 1, 0, 0]
     walkable = [door_ch, floor_ch, path_ch]
     for option in key_choice:
         if key == option:
@@ -255,6 +255,9 @@ def put_enemies_on_board(board,  enemy):
     put 3 enemies on level 2
     put boss on level 3
     '''
+    monkey = [monkey["row"], monkey["col"]]
+    for room in room_corners:
+
 
 
 def levels_generator(next_level):
