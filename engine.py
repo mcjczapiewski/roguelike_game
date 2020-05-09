@@ -9,13 +9,9 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
-<<<<<<< HEAD
 enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
 friend_list = ['F']
-=======
-enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H', '+']
 level_corr_list = ['1', '2', '3']
->>>>>>> 68e9b069ca760775489f70e945a11c4314a6b42f
 
 room_corners = []
 monkey = {
@@ -98,14 +94,10 @@ def movement(key, player, board):
                         enemy_dict = interaction.characters[dict_key]
                         interaction.fight(enemy_dict)
                 # exit movement function
-<<<<<<< HEAD
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
                 interaction.frient_meet()
-
-=======
->>>>>>> 68e9b069ca760775489f70e945a11c4314a6b42f
                 return
             # validate if corridor to another level
             elif board[check_row][check_col] in level_corr_list:
