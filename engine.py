@@ -1,5 +1,7 @@
 import random
 import interaction
+import ui
+import main
 
 
 # characters used on the map
@@ -7,8 +9,13 @@ floor_ch = ','
 wall_ch = '#'
 path_ch = '.'
 door_ch = '+'
+<<<<<<< HEAD
 enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
 friend_list = ['F']
+=======
+enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H', '+']
+level_corr_list = ['1', '2', '3']
+>>>>>>> 68e9b069ca760775489f70e945a11c4314a6b42f
 
 room_corners = []
 monkey = {
@@ -91,12 +98,18 @@ def movement(key, player, board):
                         enemy_dict = interaction.characters[dict_key]
                         interaction.fight(enemy_dict)
                 # exit movement function
+<<<<<<< HEAD
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
                 interaction.frient_meet()
 
+=======
+>>>>>>> 68e9b069ca760775489f70e945a11c4314a6b42f
                 return
+            # validate if corridor to another level
+            elif board[check_row][check_col] in level_corr_list:
+                return levels_generator()
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:
                 return
@@ -250,3 +263,17 @@ def put_enemies_on_board(board,  enemy):
     put 3 enemies on level 2
     put boss on level 3
     '''
+
+
+def levels_generator(next_level):
+    if next_level == 2:
+        if interaction.characters['hero']['points'] < 20:
+            return
+    if next_level == 3:
+        if interaction.characters['hero']['points'] < 60:
+            return
+    ui.player_was_here = [
+        [0 for x in range(0, main.BOARD_WIDTH - 2)]
+        for y in range(0, main.BOARD_HEIGHT - 2)
+    ]
+    return True
