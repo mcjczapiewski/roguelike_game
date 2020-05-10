@@ -8,8 +8,8 @@ from time import sleep
 characters = {
     "hero": {
         "name": "player",
-        "live": 75, #standardowe życie 75
-        "attack": 10, #standardowy atak 10
+        "live": 75,  # standardowe życie 75
+        "attack": 10,  # standardowy atak 10
         "chances critical hit": 3,  # podczas ataku tyle razy losujemy, żeby był max atak
         "inventory": [],
         "points": 0,
@@ -87,18 +87,18 @@ characters = {
         "attack": 100,
         "chances critical hit": 10,
         "inventory": ["bluzgi", "wyzwiska"],
-        "print_character": 'H', # po testach zmień na H
+        "print_character": 'H',  # po testach zmień na H
         "column_position": "",  # list
         "row_position": "",  # list
         "temp_field": "",
     },
-     "friend": {
+    "friend": {
         "name": "pracownik biedry",
         "live": 1,
         "attack": 1,
         "chances critical hit": 1,
         "inventory": [],
-        "print_character": 'F', # po testach zmień na F
+        "print_character": 'F',  # po testach zmień na F
         "column_position": "",  # list
         "row_position": "",  # list
         "temp_field": "",
@@ -132,13 +132,13 @@ def fight(enemy, mobs_on_board, enemy_position, board):
         enemy_random = enemy["attack"]  # zapisuje max atak wroga
         enemy_critical = enemy["chances critical hit"]
         hero_attack = random.randint(1, hero_random)  # losuje atak bohatera
-        for n in range(1, hero_critical): # losuje krytyczny atak bohatera
+        for n in range(1, hero_critical):  # losuje krytyczny atak bohatera
             random_critic = random.randint(1, 15)
             if random_critic == 1:
                 hero_attack = hero_random
         
         enemy_attack = random.randint(1, enemy_random)  # losuje atak wroga
-        for n in range(1, enemy_critical): # losuje krytyczny atak wroga
+        for n in range(1, enemy_critical):  # losuje krytyczny atak wroga
             random_critic = random.randint(1, 25)
             if random_critic == 1:
                 enemy_attack = enemy_critical
@@ -179,12 +179,14 @@ def fight(enemy, mobs_on_board, enemy_position, board):
                 end_game(win_text)
             enemy["live"] = enemy_stats_live
             break
-        if enemy_live > 0:                
+        if enemy_live > 0:
             # od życia bohatera odejmuje  atak wroga
             characters["hero"]["live"] = characters["hero"]["live"] - enemy_attack
-            check_value = ui.display_fight(random.choice(offence_words) + 
-                                        "\n\t" + "Tracisz " + str(enemy_attack) + 
-                                        " zdrowia.", enemy, quit_possible=True)
+            check_value = ui.display_fight(
+                random.choice(offence_words)
+                + "\n\t" + "Tracisz " + str(enemy_attack)
+                + " zdrowia.", enemy, quit_possible=True
+            )
 
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
             check_value = False
