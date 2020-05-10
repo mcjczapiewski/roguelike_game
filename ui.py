@@ -99,62 +99,59 @@ def display_stats_fight(stat):
 
 
 def display_fight(fight_text, enemy, quit_possible=False):
-    '''
+    """
     displayes fight screen with fight text
     fight_text: string
     enemy: dictionary
     quit_possible: True or False
-    '''
+    """
     util.clear_screen()
     print("\n\n\tKONFRONTACJA\n")
-    display_stats_fight(interaction.characters['hero'])
+    display_stats_fight(interaction.characters["hero"])
     display_stats_fight(enemy)
-    print(f'\t~ {fight_text}')
+    print(f"\t~ {fight_text}")
     if quit_possible:
         print(
-            '\n\tOpcje'
-            + '\n\t[1] Wciśnij Q aby przerwac konfrontacje'
-            + '\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów'
-            + '\n\t[3] Wciśnij dowolny klawisz aby kontynuować walkę'
+            "\n\tOpcje"
+            + "\n\t[1] Wciśnij Q aby przerwac konfrontacje"
+            + "\n\t[2] Wciśnij I aby użyć posiadanych przedmiotów"
+            + "\n\t[3] Wciśnij dowolny klawisz aby kontynuować walkę"
         )
         key = util.key_pressed().lower()
-        if key == 'q':
+        if key == "q":
             return False
         else:
             return True
     else:
         print(
-            '\n\tOpcje'
-            + '\n\t[1] Wciśnij I aby użyć posiadanych przedmiotów'
-            + '\n\t[2] Wciśnij dowolny klawisz aby kontynuować walkę'
+            "\n\tOpcje"
+            + "\n\t[1] Wciśnij I aby użyć posiadanych przedmiotów"
+            + "\n\t[2] Wciśnij dowolny klawisz aby kontynuować walkę"
         )
         key = util.key_pressed().lower()
         return True
 
 
 def display_meets(txt, quit_possible=False):
-    '''
+    """
     displayes meets screen with text
     fight_text: string
     enemy: dictionary
     quit_possible: True or False
-    '''
+    """
     util.clear_screen()
     print("\n\n\tSPOTYKASZ PRACOWNIKA BIEDRY\n")
-    print(f'\t~ {txt}')
+    print(f"\t~ {txt}")
 
     if quit_possible:
-        print(
-            '\n\tOpcje'
-            + '\n\tWciśnij Q aby przerwac konfrontacje'
-        )
+        print("\n\tOpcje" + "\n\tWciśnij Q aby przerwac konfrontacje")
         key = util.key_pressed().lower()
-        if key == 'q':
+        if key == "q":
             return False
         else:
             return True
     else:
-        print('')
+        print("")
         key = util.key_pressed().lower()
         return True
 

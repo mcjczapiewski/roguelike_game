@@ -4,16 +4,17 @@ import os
 
 def key_pressed():
     try:
-        import tty, termios
+        import tty
+        import termios
     except ImportError:
         try:
             # probably Windows
             import msvcrt
         except ImportError:
             # FIXME what to do on other platforms?
-            raise ImportError('getch not available')
+            raise ImportError("getch not available")
         else:
-            key = msvcrt.getch().decode('utf-8')
+            key = msvcrt.getch().decode("utf-8")
             return key
     else:
         fd = sys.stdin.fileno()
@@ -28,6 +29,6 @@ def key_pressed():
 
 def clear_screen():
     if os.name == "nt":
-        os.system('cls')
+        os.system("cls")
     else:
-        os.system('clear')
+        os.system("clear")

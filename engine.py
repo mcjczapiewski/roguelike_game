@@ -5,28 +5,25 @@ import main
 
 
 # characters used on the map
-floor_ch = ','
-wall_ch = '#'
-path_ch = '.'
-door_ch = '+'
-enemy_list = ['M', 'T', 'G', 'J', 'K', 'S', 'H']
-friend_list = ['F']
-level_corr_list = ['1', '2', '3']
-key_choice = ['w', 's', 'a', 'd']
+floor_ch = ","
+wall_ch = "#"
+path_ch = "."
+door_ch = "+"
+enemy_list = ["M", "T", "G", "J", "K", "S", "H"]
+friend_list = ["F"]
+level_corr_list = ["1", "2", "3"]
+key_choice = ["w", "s", "a", "d"]
 column_next = [0, 0, -1, 1]
 row_next = [-1, 1, 0, 0]
 
 room_corners = []
 mobs_on_board = []
 friends_on_board = []
-monkey = {
-    "row": 0,
-    "col": 0
-}
+monkey = {"row": 0, "col": 0}
 
 
 def create_board(width, height):
-    '''
+    """
     Creates a new game board based on input parameters.
 
     Args:
@@ -35,10 +32,10 @@ def create_board(width, height):
 
     Returns:
     list: Game board
-    '''
+    """
     # create list of lists where:
     # width == sublist length, height == number of sublists
-    board = [[' ' for x in range(0, width - 2)] for y in range(0, height - 2)]
+    board = [[" " for x in range(0, width - 2)] for y in range(0, height - 2)]
     # put some rooms on the board, max h/w is half of board h/w
     for room_num in range(0, random.randint(4, 6)):
         room_gen(board)
@@ -54,7 +51,7 @@ def create_board(width, height):
 
 
 def put_player_on_board(board, player):
-    '''
+    """
     Modifies the game board by placing the player icon at its coordinates.
 
     Args:
@@ -63,26 +60,35 @@ def put_player_on_board(board, player):
 
     Returns:
     Nothing
-    '''
+    """
     # set temp to what is in the filed before player stands there
-    player['temp_field'] = board[player['row_position']][player['column_position']]
+    player["temp_field"] = board[player["row_position"]][
+        player["column_position"]
+    ]
     # put player in the position
-    board[player['row_position']][player['column_position']] = player['icon']
-    monkey["row"] = player['row_position']
-    monkey["col"] = player['column_position']
+    board[player["row_position"]][player["column_position"]] = player["icon"]
+    monkey["row"] = player["row_position"]
+    monkey["col"] = player["column_position"]
 
 
 def movement(key, player, board):
-    ''' moves the player position, if movement is allowed '''
+    """ moves the player position, if movement is allowed """
     # retrieve the original value of the field
-    board[player['row_position']][player['column_position']] = player['temp_field']
+    board[player["row_position"]][player["column_position"]] = player[
+        "temp_field"
+    ]
     # movement
     walkable = [door_ch, floor_ch, path_ch]
     for option in key_choice:
         if key == option:
             # next position
-            check_col = player['column_position'] + column_next[key_choice.index(option)]
-            check_row = player['row_position'] + row_next[key_choice.index(option)]
+            check_col = (
+                player["column_position"]
+                + column_next[key_choice.index(option)]
+            )
+            check_row = (
+                player["row_position"] + row_next[key_choice.index(option)]
+            )
             # validate if after the move, player still on board
             if check_col not in range(0, len(board[0])):
                 return
@@ -92,16 +98,23 @@ def movement(key, player, board):
             elif board[check_row][check_col] in enemy_list:
                 # initiate fight
                 for dict_key, dict_value in interaction.characters.items():
-                    if dict_value['print_character'] == board[check_row][check_col]:
+                    if (
+                        dict_value["print_character"]
+                        == board[check_row][check_col]
+                    ):
                         enemy_dict = interaction.characters[dict_key]
                         enemy_position = [check_row, check_col]
-                        interaction.fight(enemy_dict, mobs_on_board, enemy_position, board)
+                        interaction.fight(
+                            enemy_dict, mobs_on_board, enemy_position, board
+                        )
                 # exit movement function
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
                 friend_position = [check_row, check_col]
-                interaction.friend_meet(friends_on_board, friend_position, board)
+                interaction.friend_meet(
+                    friends_on_board, friend_position, board
+                )
                 return
             # validate if corridor to another level
             elif board[check_row][check_col] in level_corr_list:
@@ -110,13 +123,13 @@ def movement(key, player, board):
             elif board[check_row][check_col] not in walkable:
                 return
             # move player to the next locations
-            player['column_position'] += column_next[key_choice.index(option)]
-            player['row_position'] += row_next[key_choice.index(option)]
+            player["column_position"] += column_next[key_choice.index(option)]
+            player["row_position"] += row_next[key_choice.index(option)]
             return
 
 
 def room_gen(board):
-    ''' generates empty room on the board '''
+    """ generates empty room on the board """
     # set room parameters
     try:
         r_height = random.randint(5, len(board) / 2)
@@ -131,7 +144,10 @@ def room_gen(board):
     can_build = True
     for room_row in range(row_pointer - 1, row_pointer + r_height + 1):
         for room_col in range(col_pointer - 1, col_pointer + r_width + 1):
-            if board[room_row][room_col] == wall_ch or board[room_row][room_col] == floor_ch:
+            if (
+                board[room_row][room_col] == wall_ch
+                or board[room_row][room_col] == floor_ch
+            ):
                 can_build = False
     # step 3: draw a room
     if can_build:
@@ -146,24 +162,26 @@ def room_gen(board):
                 if temp[0] % 2 == 0 and temp[1] % 2 == 0:
                     corridor_connector_list.append(temp)
         # corners of the room
-        room_corners.append([
-            [row_pointer, col_pointer],
-            [row_pointer + r_height - 1, col_pointer],
-            [row_pointer, col_pointer + r_width - 1],
-            [row_pointer + r_height - 1, col_pointer + r_width - 1],
-        ])
+        room_corners.append(
+            [
+                [row_pointer, col_pointer],
+                [row_pointer + r_height - 1, col_pointer],
+                [row_pointer, col_pointer + r_width - 1],
+                [row_pointer + r_height - 1, col_pointer + r_width - 1],
+            ]
+        )
         # set corridor connector
         corridor_connector = random.choice(corridor_connector_list)
-        board[corridor_connector[0]][corridor_connector[1]] = 'C'
+        board[corridor_connector[0]][corridor_connector[1]] = "C"
     else:
         room_gen(board)
 
 
 def check_pos_around(board, curr_pos):
-    '''
+    """
     curr_pos: tuple (row, col)
     returns list of fields around a given field
-    '''
+    """
     search_list = []
     for row in range(curr_pos[0] - 1, curr_pos[0] + 2):
         for col in range(curr_pos[1] - 1, curr_pos[1] + 2):
@@ -172,21 +190,24 @@ def check_pos_around(board, curr_pos):
 
 
 def door_gen(board):
-    ''' make doors where possible '''
+    """ make doors where possible """
     for door_candidate in list_of_pos(board, wall_ch):
         checklist = check_pos_around(board, door_candidate)
-        if checklist.count(path_ch) == 1 and path_ch in [checklist[index] for index in [1, 3, 5, 7]]:
-            if (
-                [checklist[index] for index in [1, 7]].count(wall_ch) == 2
-                or [checklist[index] for index in [3, 5]].count(wall_ch) == 2
-            ):
+        if checklist.count(path_ch) == 1 and path_ch in [
+            checklist[index] for index in [1, 3, 5, 7]
+        ]:
+            if [checklist[index] for index in [1, 7]].count(wall_ch) == 2 or [
+                checklist[index] for index in [3, 5]
+            ].count(wall_ch) == 2:
                 board[door_candidate[0]][door_candidate[1]] = door_ch
 
 
 def path_gen(board, random_match=True):
-    ''' mark walls where making door is possible '''
+    """ mark walls where making door is possible """
     # make list of positions of corridor connectors
-    corridor_connector_list = list_of_pos(board, 'C') + list_of_pos(board, path_ch)
+    corridor_connector_list = list_of_pos(board, "C") + list_of_pos(
+        board, path_ch
+    )
     # link connectors randomly
     while len(corridor_connector_list) > 1:
         if random_match:
@@ -199,30 +220,36 @@ def path_gen(board, random_match=True):
             next_pointer = corridor_connector_list[0]
         # make list of path positions
         path_list = []
-        row_range = range(min(pointer[0], next_pointer[0]), max(pointer[0], next_pointer[0]) + 1)
-        col_range = range(min(pointer[1], next_pointer[1]), max(pointer[1], next_pointer[1]) + 1)
+        row_range = range(
+            min(pointer[0], next_pointer[0]),
+            max(pointer[0], next_pointer[0]) + 1,
+        )
+        col_range = range(
+            min(pointer[1], next_pointer[1]),
+            max(pointer[1], next_pointer[1]) + 1,
+        )
         for path_row in row_range:
             for path_col in col_range:
-                if (
-                    path_row in [min(row_range), max(row_range)]
-                    or path_col in [min(col_range), max(col_range)]
-                ):
+                if path_row in [
+                    min(row_range),
+                    max(row_range),
+                ] or path_col in [min(col_range), max(col_range)]:
                     temp = (path_row, path_col)
                     path_list.append(temp)
         # change empty positions to path
         for path_row, path_col in path_list:
-            if board[path_row][path_col] == ' ':
+            if board[path_row][path_col] == " ":
                 board[path_row][path_col] = path_ch
         # move pointer
         pointer = next_pointer
     # clear connectors
-    for c_row, c_col in list_of_pos(board, 'C'):
+    for c_row, c_col in list_of_pos(board, "C"):
         board[c_row][c_col] = floor_ch
 
 
 def fake_gen(board):
     # make list of positions of empty fields
-    empty_pos_list = list_of_pos(board, ' ')
+    empty_pos_list = list_of_pos(board, " ")
     # select random positions to make fake corridors
     fake_connection = random.choice(empty_pos_list)
     # check if row and col numbers are even
@@ -233,7 +260,7 @@ def fake_gen(board):
 
 
 def list_of_pos(board, criteria):
-    ''' make list of positions of criteria on board '''
+    """ make list of positions of criteria on board """
     pos_list = []
     for row in range(0, len(board)):
         for column in range(0, len(board[0])):
@@ -244,21 +271,21 @@ def list_of_pos(board, criteria):
 
 
 def get_spawn_pos(board, player):
-    '''
+    """
     get position of player spawn on the map
     return: tuple with (row, col) of spawn position
-    '''
+    """
     new_pos = random.choice(list_of_pos(board, floor_ch))
-    player['column_position'] = new_pos[1]
-    player['row_position'] = new_pos[0]
+    player["column_position"] = new_pos[1]
+    player["row_position"] = new_pos[0]
 
 
 def put_enemies_on_board(board, enemies, level_change="1"):
-    '''
+    """
     put 3 enemies on level 1
     put 3 enemies on level 2
     put boss on level 3
-    '''
+    """
     random.shuffle(room_corners)
     lvl_1_mobs = enemies[0:2]
     lvl_2_mobs = enemies[3:5]
@@ -291,9 +318,9 @@ def put_enemies_on_board(board, enemies, level_change="1"):
 
 
 def put_friends_on_board(board, friends):
-    '''
+    """
     put friends on board
-    '''
+    """
     possible_friends_number = random.randint(1, len(room_corners) - 1)
     number_of_friends = 0
     rooms_with_friends = []
@@ -322,7 +349,9 @@ def mobs_movement(board, mobs, player):
         possible_move = []
         row_col = [[0, -1], [0, 1], [1, 0], [-1, 0], [0, 0]]
         for coordinate in row_col:
-            possible_move.append([mob[0] + coordinate[0], mob[1] + coordinate[1]])
+            possible_move.append(
+                [mob[0] + coordinate[0], mob[1] + coordinate[1]]
+            )
         board_mark = ""
         while board_mark != ",":
             new_position = random.choice(possible_move)
@@ -341,10 +370,10 @@ def mobs_movement(board, mobs, player):
 
 def levels_generator(next_level):
     if next_level == "2":
-        if interaction.characters['hero']['points'] < 5:
+        if interaction.characters["hero"]["points"] < 5:
             return False
     if next_level == "3":
-        if interaction.characters['hero']['points'] < 15:
+        if interaction.characters["hero"]["points"] < 15:
             return False
     ui.player_was_here = [
         [0 for x in range(0, main.BOARD_WIDTH - 2)]
