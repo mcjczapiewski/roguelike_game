@@ -39,8 +39,8 @@ characters = {
     },
     "enemy middle": {
         "name": "gimbaza",
-        "live": 50,
-        "attack": 10,
+        "live": 60,
+        "attack": 15,
         "chances critical hit": 5,
         "inventory": ["glosnik blutuf", "czipsy", "plecak"],
         "print_character": 'G',
@@ -50,8 +50,8 @@ characters = {
     },
     "enemy middle upper 1": {
         "name": "Biznesmen Janusz",
-        "live": 55,
-        "attack": 20,
+        "live": 75,
+        "attack": 30,
         "chances critical hit": 6,
         "inventory": ["teczka", "wyzwiska"],
         "print_character": 'J',
@@ -61,8 +61,8 @@ characters = {
     },
     "enemy middle upper 2": {
         "name": "Madka Karyna",
-        "live": 55,
-        "attack": 20,
+        "live": 75,
+        "attack": 30,
         "chances critical hit": 6,
         "inventory": ["wyzwiska", "czipsy", "torebka podróbka"],
         "print_character": 'K',
@@ -72,7 +72,7 @@ characters = {
     },
     "enemy upper": {
         "name": "Straznik Miejski",
-        "live": 55,
+        "live": 105,
         "attack": 70,
         "chances critical hit": 8,
         "inventory": ["mandat", "pączek"],
@@ -108,7 +108,7 @@ characters = {
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
 # podczas walki tak, żeby wiele razy wygrywać z tym samym wrogiem.
-def fight(enemy, mobs_on_board, enemy_position, board):
+def fight(enemy):
     ''' initiates fight with the enemy
     enemy: dictionary with enemy characteristics (taken from the characters dict)
     '''
@@ -149,23 +149,26 @@ def fight(enemy, mobs_on_board, enemy_position, board):
         ui.display_fight(random.choice(hit_words) + "\n\t" + enemy_name + " traci " + str(hero_attack) + " zdrowia", enemy)
 
         if enemy_live < 1:  # jeżeli wróg przegra
-            mobs_on_board.remove(enemy_position)
-            board[enemy_position[0]][enemy_position[1]] = ","
             outcome = ''
+            point = random.randint(1, 3)
             hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
             if hero_add < 4:
                 outcome = "Brawo, rośnie Ci atak"
-                characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+                characters["hero"]["attack"] = characters["hero"]["attack"] + point
+                characters["hero"]["points"] = characters["hero"]["points"] + 1
             if hero_add > 5:
                 outcome = "Brawo, rośnie Ci szansa uderzenia krytycznego"
                 characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
+                characters["hero"]["points"] = characters["hero"]["points"] + 1
             if hero_add == 4:
                 outcome = "Brawo, rośnie Ci szansa uderzenia krytycznego i atak"
                 characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
                 characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+                characters["hero"]["points"] = characters["hero"]["points"] + 1
             if hero_add == 5:
                 outcome = "Brawo, rośnie Ci zdrowie"
-                characters["hero"]["live"] = characters["hero"]["live"] + 5
+                characters["hero"]["live"] = characters["hero"]["live"] + point
+                characters["hero"]["points"] = characters["hero"]["points"] + point
             # kończe walke
             ui.display_fight("Ojoj, " + enemy_name + " już się nie rusza.\n\t" + outcome, enemy)
             check_value = False
@@ -187,6 +190,7 @@ def fight(enemy, mobs_on_board, enemy_position, board):
                 + "\n\t" + "Tracisz " + str(enemy_attack)
                 + " zdrowia.", enemy, quit_possible=True
             )
+
 
         if characters["hero"]["live"] < 1:  # jeżeli bohater przegra
             check_value = False
@@ -210,6 +214,7 @@ def fight(enemy, mobs_on_board, enemy_position, board):
             ui.display_fight('A to %^$$%*^@# jeden', enemy)
             if inventory_chosen == "mandat":
                 ui.display_fight("Ten #^%&^* chciał mi wlepić mandat. Dobrze mu tak", enemy)
+                characters["hero"]["points"] = characters["hero"]["points"] + 5
         if inventory_chosen == "czipsy" or inventory_chosen == "pączek":
             add_health = random.randint(10, 40)
             ui.display_fight("O! " + inventory_chosen + " Tego mi było trzeba, czuje się " + str(add_health) + " razy lepiej", enemy)
@@ -225,6 +230,7 @@ def fight(enemy, mobs_on_board, enemy_position, board):
             ui.display_fight("O! " + inventory_chosen + " Co my tu mamy w środku? Mała cytrynówka?" + 
                             "\n\t  Tego mi było trzeba, czuje się 5 razy lepiej", enemy)
             characters["hero"]["live"] = characters["hero"]["live"] + 70
+            characters["hero"]["points"] = characters["hero"]["points"] + 5
             ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " zdrowia" +
                             "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, aż 10! ", enemy)
             characters["hero"]["points"] = characters["hero"]["points"] + 10
@@ -241,7 +247,7 @@ def fight(enemy, mobs_on_board, enemy_position, board):
             characters["hero"]["live"] = characters["hero"]["live"] + 40
             ui.display_fight('Teraz mam już ' + str(characters["hero"]["live"]) + " zdrowia" + 
                             "\n\t  A co tu mi wypadło? Naklejki ze świeżakami, całe 5! ", enemy)
-            characters["hero"]["points"] = characters["hero"]["points"] + 5
+            characters["hero"]["points"] = characters["hero"]["points"] + 15
 
     # ustalam, że jak po walce ma ponad 100 pkt, to wygrywa
     if characters["hero"]["points"] > 100:
@@ -288,25 +294,31 @@ def friend_meet(friends_on_board, friend_position, board):
     ui.display_meets('Spotkałeś pracownika obsługi Biedronki\n\n\n' + friend_text)
     #jak wprowadzić dowolny tekst przez gracza
     no_matter = input("tylko szybko \n")
+    point = random.randint(1, 3)
+    hero_add = random.randint(1, 8)  # losuję co zdobędzie bohater
     friends_on_board.remove(friend_position)
     board[friend_position[0]][friend_position[1]] = ","
-    hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
     if hero_add < 4:
         outcome = " Jedyne, co mogę Ci dac to atak "
-        characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+        characters["hero"]["attack"] = characters["hero"]["attack"] + point
     if hero_add > 5:
         outcome = " Jedyne, co mogę Ci dac to szansa uderzenia krytycznego "
-        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
+        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + point
     if hero_add == 4:
-        outcome = " Jedyne, co mogę Ci dac to szansa uderzenia krytycznego i atak +1 "
-        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + 1
-        characters["hero"]["attack"] = characters["hero"]["attack"] + 1
+        outcome = " Jedyne, co mogę Ci dac to szansa uderzenia krytycznego i atak"
+        characters["hero"]["chances critical hit"] = characters["hero"]["chances critical hit"] + v
+        characters["hero"]["attack"] = characters["hero"]["attack"] + v
     if hero_add == 5:
-        outcome = " Jedyne, co mogę Ci dac to zdrowie +5 "
-        characters["hero"]["live"] = characters["hero"]["live"] + 5
+        outcome = " Jedyne, co mogę Ci dac to zdrowie "
+        characters["hero"]["live"] = characters["hero"]["live"] + point + point + point
     if hero_add == 7:        
         outcome = outcome + "\n I masz jeszcze buha dla zdrowia "
-        characters["hero"]["live"] = characters["hero"]["live"] + 1
+        characters["hero"]["live"] = characters["hero"]["live"] + point
+    if hero_add == 8:        
+        outcome = outcome + "\n Zobacz, miałeś przyklejoną naklejke na plecach, to świeżak! \n Masz golnij sobie cytrynóweczkę kurła dla zdrowotności \n i drugi razn na  drógą nóżkę"
+        characters["hero"]["live"] = characters["hero"]["live"] + point
+        characters["hero"]["points"] = characters["hero"]["points"] + 1
+        
 
     friend_text = random.choice(friend_bye)
     text = outcome + '\n\n' + friend_text
