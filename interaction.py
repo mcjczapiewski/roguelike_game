@@ -108,7 +108,7 @@ characters = {
 
 # chwilowo dla bohatera pod zmienną podstawiamy określonego wroga, który traci życie
 # podczas walki tak, żeby wiele razy wygrywać z tym samym wrogiem.
-def fight(enemy):
+def fight(enemy, mobs_on_board, enemy_position, board):
     ''' initiates fight with the enemy
     enemy: dictionary with enemy characteristics (taken from the characters dict)
     '''
@@ -150,6 +150,8 @@ def fight(enemy):
 
         if enemy_live < 1:  # jeżeli wróg przegra
             outcome = ''
+            mobs_on_board.remove(enemy_position)
+            board[enemy_position[0]][enemy_position[1]] = ","
             point = random.randint(1, 3)
             hero_add = random.randint(1, 7)  # losuję co zdobędzie bohater
             if hero_add < 4:
