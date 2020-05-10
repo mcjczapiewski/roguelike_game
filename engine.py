@@ -100,11 +100,12 @@ def movement(key, player, board):
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
-                interaction.friend_meet()
+                friend_position = [check_row, check_col]
+                interaction.friend_meet(friends_on_board, friend_position, board)
                 return
             # validate if corridor to another level
             elif board[check_row][check_col] in level_corr_list:
-                return levels_generator()
+                return board[check_row][check_col]
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:
                 return
@@ -252,7 +253,7 @@ def get_spawn_pos(board, player):
     player['row_position'] = new_pos[0]
 
 
-def put_enemies_on_board(board, enemies):
+def put_enemies_on_board(board, enemies, level_change="1"):
     '''
     put 3 enemies on level 1
     put 3 enemies on level 2
@@ -274,8 +275,12 @@ def put_enemies_on_board(board, enemies):
             possible_mobs = 1
         for number in range(possible_mobs):
             board_mark = ""
-            # DODAĆ ROZRÓŻNIENIE NA POZIOMY
-            enemy = random.choice(lvl_1_mobs)
+            if level_change == "1":
+                enemy = random.choice(lvl_1_mobs)
+            elif level_change == "2":
+                enemy = random.choice(lvl_2_mobs)
+            elif level_change == "3":
+                enemy = random.choice(lvl_3_boss)
             while board_mark != ",":
                 mob_x = random.randint(room[0][0] + 1, room[1][0] - 1)
                 mob_y = random.randint(room[1][1] + 1, room[2][1] - 1)
@@ -335,14 +340,40 @@ def mobs_movement(board, mobs, player):
 
 
 def levels_generator(next_level):
-    if next_level == 2:
-        if interaction.characters['hero']['points'] < 20:
-            return
-    if next_level == 3:
-        if interaction.characters['hero']['points'] < 60:
-            return
+    if next_level == "2":
+        if interaction.characters['hero']['points'] < 5:
+            return False
+    if next_level == "3":
+        if interaction.characters['hero']['points'] < 15:
+            return False
     ui.player_was_here = [
         [0 for x in range(0, main.BOARD_WIDTH - 2)]
         for y in range(0, main.BOARD_HEIGHT - 2)
     ]
-    return True
+    room_corners.clear()
+    mobs_on_board.clear()
+    friends_on_board.clear()
+    monkey["row"] = 0
+    monkey["col"] = 0
+    return next_level
+
+
+def next_level_pass(board, player, level_change="1"):
+    random.shuffle(room_corners)
+    player_xy = [player["row_position"], player["column_position"]]
+    for room in room_corners:
+        if (
+            room[0][0] <= player_xy[0] <= room[1][0]
+            and room[1][1] <= player_xy[1] <= room[2][1]
+        ):
+            continue
+        if level_change == "1":
+            mark_x = random.randint(room[0][0] + 1, room[1][0] - 1)
+            mark_y = random.randint(room[1][1] + 1, room[2][1] - 1)
+            board[mark_x][mark_y] = "2"
+            return
+        elif level_change == "2":
+            mark_x = random.randint(room[0][0] + 1, room[1][0] - 1)
+            mark_y = random.randint(room[1][1] + 1, room[2][1] - 1)
+            board[mark_x][mark_y] = "3"
+            return

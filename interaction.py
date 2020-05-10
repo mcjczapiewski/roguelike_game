@@ -267,7 +267,7 @@ def end_game(some_text):
     sys.exit(0)
 
 
-def frient_meet():
+def friend_meet(friends_on_board, friend_position, board):
     friend_hello = ["Cześć, jak Ci pomóc", "Dzień dobry, w czym mogę pomóc?", 
                 "Ooo... Siema, co tam u Ciebie", "Witam, co podać, w czym pomóc?",
                 "czego mi tu...", 
@@ -294,6 +294,8 @@ def frient_meet():
     no_matter = input("tylko szybko \n")
     point = random.randint(1, 3)
     hero_add = random.randint(1, 8)  # losuję co zdobędzie bohater
+    friends_on_board.remove(friend_position)
+    board[friend_position[0]][friend_position[1]] = ","
     if hero_add < 4:
         outcome = " Jedyne, co mogę Ci dac to atak "
         characters["hero"]["attack"] = characters["hero"]["attack"] + point
