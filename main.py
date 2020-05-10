@@ -66,9 +66,9 @@ def main():
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     engine.get_spawn_pos(board, player)
     util.clear_screen()
-
     engine.put_friends_on_board(board, engine.friend_list)
     engine.put_enemies_on_board(board, engine.enemy_list)
+    engine.next_level_pass(board, player)
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
@@ -90,6 +90,9 @@ def main():
             if level_change:
                 board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
                 engine.get_spawn_pos(board, player)
+                engine.next_level_pass(board, player, level_change)
+                engine.put_friends_on_board(board, engine.friend_list)
+                engine.put_enemies_on_board(board, engine.enemy_list, level_change)
         util.clear_screen()
         engine.mobs_movement(board, engine.mobs_on_board, player)
         engine.mobs_movement(board, engine.friends_on_board, player)
