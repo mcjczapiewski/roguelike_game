@@ -100,11 +100,12 @@ def movement(key, player, board):
                 return
             # Meets the friend
             elif board[check_row][check_col] in friend_list:
-                interaction.friend_meet()
+                friend_position = [check_row, check_col]
+                interaction.friend_meet(friends_on_board, friend_position, board)
                 return
             # validate if corridor to another level
             elif board[check_row][check_col] in level_corr_list:
-                return levels_generator(board[check_row][check_col])
+                return board[check_row][check_col]
             # validate if walkable field
             elif board[check_row][check_col] not in walkable:
                 return
@@ -339,16 +340,21 @@ def mobs_movement(board, mobs, player):
 
 
 def levels_generator(next_level):
-    # if next_level == "2":
-    #     if interaction.characters['hero']['points'] < 20:
-    #         return False
-    # if next_level == "3":
-    #     if interaction.characters['hero']['points'] < 60:
-    #         return False
+    if next_level == "2":
+        if interaction.characters['hero']['points'] < 5:
+            return False
+    if next_level == "3":
+        if interaction.characters['hero']['points'] < 15:
+            return False
     ui.player_was_here = [
         [0 for x in range(0, main.BOARD_WIDTH - 2)]
         for y in range(0, main.BOARD_HEIGHT - 2)
     ]
+    room_corners.clear()
+    mobs_on_board.clear()
+    friends_on_board.clear()
+    monkey["row"] = 0
+    monkey["col"] = 0
     return next_level
 
 
@@ -370,3 +376,4 @@ def next_level_pass(board, player, level_change="1"):
             mark_x = random.randint(room[0][0] + 1, room[1][0] - 1)
             mark_y = random.randint(room[1][1] + 1, room[2][1] - 1)
             board[mark_x][mark_y] = "3"
+            return
