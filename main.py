@@ -26,7 +26,7 @@ def open_text(txt, s=6, countdown_screen=False):
         print(txt)
         # wciśnięcie klawisza zamiast sleep, żeby można było przejść szybciej dalej
         print("\n\n\nWciśnij dowolny klawisz, aby kontynuować...")
-        key = util.key_pressed()
+        util.key_pressed()
         util.clear_screen()
     if countdown_screen is True:
         for second in reversed(range(1, 6)):
@@ -88,11 +88,13 @@ def main():
             # movement
             level_change = engine.movement(key, player, board)
             if level_change:
-                board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-                engine.get_spawn_pos(board, player)
-                engine.next_level_pass(board, player, level_change)
-                engine.put_friends_on_board(board, engine.friend_list)
-                engine.put_enemies_on_board(board, engine.enemy_list, level_change)
+                can_he_pass = engine.levels_generator(level_change)
+                if can_he_pass:
+                    board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+                    engine.get_spawn_pos(board, player)
+                    engine.next_level_pass(board, player, can_he_pass)
+                    engine.put_friends_on_board(board, engine.friend_list)
+                    engine.put_enemies_on_board(board, engine.enemy_list, can_he_pass)
         util.clear_screen()
         engine.mobs_movement(board, engine.mobs_on_board, player)
         engine.mobs_movement(board, engine.friends_on_board, player)
